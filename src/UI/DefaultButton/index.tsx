@@ -7,11 +7,13 @@ export type DefaultButtonProps =
     $bgColor?: string;
     as?: any;
     rest?: any;
+    to?: string;
   };
 
 const DefaultButton: React.FC<DefaultButtonProps> = ({
   text,
   as,
+  to,
   type = "button",
   fullWidth,
   $bgColor,
@@ -21,6 +23,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
     <DefaultButtonWrapp
       as={as}
       type={type}
+      to={to}
       fullWidth={fullWidth}
       $bgColor={$bgColor}
       {...rest}

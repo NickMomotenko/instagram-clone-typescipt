@@ -7,13 +7,15 @@ export const Column: React.FC<ColumnProps> = ({ children, ...props }) => {
   return <ColumnWrapp {...props}>{children}</ColumnWrapp>;
 };
 
-export const Row: React.FC<RowProps> = React.forwardRef((props, ref) => {
-  return (
-    <RowWrapp ref={ref} {...props}>
-      {props.children}
-    </RowWrapp>
-  );
-});
+export const Row: React.FC<RowProps> = React.forwardRef(
+  ({ center, children, ...rest }, ref) => {
+    return (
+      <RowWrapp ref={ref} center={center} {...rest}>
+        {children}
+      </RowWrapp>
+    );
+  }
+);
 
 export const Block: React.FC<BlockProps> = ({ children, ...props }) => {
   return <BlockWrapp {...props}>{children}</BlockWrapp>;

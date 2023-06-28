@@ -26,8 +26,11 @@ const Login: React.FC<LoginProps> = ({ isPreloaderActive = false }) => {
       </LoginFormWrapp>
 
       <DemoButton>
-        <Text text="If you are here first time" />
-        <Text text="You can use Demo Version , with no login and registration" />
+        <Text text="If you are here first time" bold />
+        <Text
+          text="You can use Demo Version , with no login and registration"
+          style={{ marginBottom: 10 }}
+        />
         <DefaultButton
           text="Try Demo Version"
           onClick={(e) => {

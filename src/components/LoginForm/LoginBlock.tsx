@@ -5,15 +5,15 @@ import { useForm } from "../../hooks/useForm";
 
 import DefaultButton from "../../UI/DefaultButton";
 import { Row } from "../../UI/Layout";
-// import Text from "../../UI/Text";
+import Text from "../../UI/Text";
 import Form from "../../UI/Form";
 
 import { Logo } from "../Logo";
 
 import { checkUpperCase, checkValueLength } from "../../helpers/validate-input";
 
-// import { authRoutes } from "../../helpers/base-routes";
-// import { Link } from "react-router-dom";
+import { authRoutes } from "../../helpers/base-routes";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGIN } from "../../redux/auth/types";
 import Input from "../../UI/Input";
@@ -65,29 +65,27 @@ const LoginBlock = () => {
         $bgColor="#0095f6"
         style={{ marginTop: 15 }}
       />
-      <Row>
+      <Row center style={{ marginTop: 20 }}>
         <Div />
         <LoginTextWithLine text="or" color="#917777" />
         <Div />
       </Row>
 
-      <LoginRow>
-        {/* <DefaultButton
+      <LoginRow style={{ marginTop: 20 }}>
+        <DefaultButton
           as={Link}
           to={authRoutes.create}
           text="Create a new account"
-          bgcolor="#0095f6"
-        /> */}
+          $bgColor="#0095f6"
+        />
       </LoginRow>
-      <LoginRow
-      // style={{ marginTop: 10 }}
-      >
-        {/* <Text
+      <LoginRow style={{ marginTop: 10 }}>
+        <Text
           as={Link}
           to={authRoutes.forgot}
           text="Forgot password?"
           color="#00376b"
-        /> */}
+        />
       </LoginRow>
     </Form>
   );

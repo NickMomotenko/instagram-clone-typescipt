@@ -4,9 +4,11 @@ export type ColumnProps = {
 };
 
 export type RowProps = {
-  props?: any;
+  rest?: any;
   children?: React.ReactNode;
   ref?: any;
+  center?: boolean;
+  style?: any;
 };
 
 export type BlockProps = {
