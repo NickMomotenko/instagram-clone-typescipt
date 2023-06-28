@@ -52,13 +52,13 @@ const Input: React.FC<InputProps> = React.forwardRef(
         ) : (
           <Text
             text={error && error}
-            // style={{
-            //   marginTop: 5,
-            //   fontSize: 12,
-            //   paddingLeft: 15,
-            //   minHeight: 15,
-            //   textAlign: "left",
-            // }}
+            style={{
+              marginTop: 5,
+              fontSize: 12,
+              paddingLeft: 15,
+              minHeight: 15,
+              textAlign: "left",
+            }}
           />
         )}
       </InputWrapp>

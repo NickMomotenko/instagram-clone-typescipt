@@ -6,22 +6,22 @@ type TextProps = {
   as?: any;
   rest?: any;
   style?: any;
-  bold?: boolean;
+  $bold?: boolean;
   to?: string;
   color?: string;
+  $center?: boolean;
 };
 
 const Text: React.FC<TextProps> = ({
   text,
   children,
   as,
-  bold,
   color,
   to,
   ...rest
 }) => {
   return (
-    <TextWrapp as={as} bold={bold} to={to} {...rest}>
+    <TextWrapp as={as} to={to} {...rest}>
       {children}
       {text}
     </TextWrapp>

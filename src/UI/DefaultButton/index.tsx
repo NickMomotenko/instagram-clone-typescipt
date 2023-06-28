@@ -3,7 +3,7 @@ import { DefaultButtonWrapp } from "./styled";
 export type DefaultButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     text?: string;
-    fullWidth?: boolean;
+    $fullWidth?: boolean;
     $bgColor?: string;
     as?: any;
     rest?: any;
@@ -15,7 +15,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
   as,
   to,
   type = "button",
-  fullWidth,
+  $fullWidth,
   $bgColor,
   ...rest
 }) => {
@@ -24,7 +24,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
       as={as}
       type={type}
       to={to}
-      fullWidth={fullWidth}
+      $fullWidth={$fullWidth}
       $bgColor={$bgColor}
       {...rest}
     >

@@ -61,7 +61,7 @@ const LoginBlock = () => {
       <DefaultButton
         text="Login"
         type="submit"
-        fullWidth
+        $fullWidth
         $bgColor="#0095f6"
         style={{ marginTop: 15 }}
       />

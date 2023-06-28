@@ -27,7 +27,8 @@ const ForgotPassword = () => {
       <Block style={{ textAlign: "center" }}>
         <Text
           text="Trouble Logging In?"
-          center
+          $bold
+          $center
           style={{ fontSize: 17, marginBottom: 15 }}
         />
         <Text
@@ -44,7 +45,7 @@ const ForgotPassword = () => {
         />
         <DefaultButton
           text="Send Login Link"
-          fullWidth
+          $fullWidth
           $bgColor="#0095f6"
           style={{ marginTop: 15 }}
           type="submit"

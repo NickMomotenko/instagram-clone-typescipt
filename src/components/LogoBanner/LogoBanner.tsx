@@ -20,7 +20,7 @@ const LogoBanner: React.FC<LogoBannerProps> = ({
   }, [isPreloaderActive]);
 
   return (
-    <LogoBannerWrapp active={isActive}>
+    <LogoBannerWrapp $active={isActive}>
       <Logo />
       <Text
         text="Developed by Nick Momotenko"

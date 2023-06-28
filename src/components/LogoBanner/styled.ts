@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const LogoBannerWrapp = styled.div<{ active?: any }>`
+export const LogoBannerWrapp = styled.div<{ $active?: any }>`
   background: #ffffff;
   box-shadow: 0 15px 20px #bcbcef;
   border-radius: 0 0 35px 35px;
@@ -18,8 +18,8 @@ export const LogoBannerWrapp = styled.div<{ active?: any }>`
   transition: opacity, top 0.5s;
   transition-delay: 0.7s;
 
-  ${({ active }) =>
-    active === true &&
+  ${({ $active }) =>
+    $active === true &&
     css`
       opacity: 1;
       top: 0;

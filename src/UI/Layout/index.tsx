@@ -17,8 +17,8 @@ export const Row: React.FC<RowProps> = React.forwardRef(
   }
 );
 
-export const Block: React.FC<BlockProps> = ({ children, ...props }) => {
-  return <BlockWrapp {...props}>{children}</BlockWrapp>;
+export const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
+  return <BlockWrapp {...rest}>{children}</BlockWrapp>;
 };
 
 export const Paper: React.FC<PaperProps> = React.forwardRef(

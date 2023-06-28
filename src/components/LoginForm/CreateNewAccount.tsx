@@ -70,7 +70,7 @@ const CreateNewAccount = () => {
           <DefaultButton
             text="Next"
             type="submit"
-            fullWidth
+            $fullWidth
             $bgColor="#0095f6"
           />
         );
@@ -83,13 +83,13 @@ const CreateNewAccount = () => {
                 e.preventDefault();
                 decrementStep();
               }}
-              fullWidth
+              $fullWidth
               $bgColor="#f60062"
             />
             <DefaultButton
               text="Next"
               type="submit"
-              fullWidth
+              $fullWidth
               $bgColor="#0095f6"
               style={{ marginLeft: 15 }}
             />
@@ -106,22 +106,22 @@ const CreateNewAccount = () => {
         <Block>
           <Text
             text="Create new account"
-            // bold
-            // center
-            // style={{ fontSize: 17, marginBottom: 15 }}
+            $bold
+            $center
+            style={{ fontSize: 17, marginBottom: 15 }}
           />
           <Text
             text="Sign up to see photos and videos from your friends."
-            // style={{ marginBottom: 15 }}
+            $center
+            style={{ marginBottom: 15 }}
           />
         </Block>
-        <Block
-        // style={{ borderBottom: "1px solid #c2cddb", marginBottom: 10 }}
-        >
+        <Block style={{ marginBottom: 10 }}>
           <Text
             text={`Step #${step}`}
-            // bold
-            // style={{ paddingLeft: 5, paddingBottom: 4 }}
+            $bold
+            $center
+            style={{ paddingLeft: 5, paddingBottom: 4 }}
           />
         </Block>
         <StepperWrapp>
@@ -185,20 +185,15 @@ const CreateNewAccount = () => {
 
         <Block>
           <Row>{generateStepButton()}</Row>
-          <Row
-          // center
-          // style={{ marginTop: 20 }}
-          >
+          <Row center style={{ marginTop: 20 }}>
             <Div />
             <LoginTextWithLine text="or" color="#917777" />
             <Div />
           </Row>
-          <LoginRow
-          // style={{ marginTop: 15 }}
-          >
+          <LoginRow style={{ marginTop: 15 }}>
             <Text
-              // as={Link}
-              // to={baseRoutes.login}
+              as={Link}
+              to={baseRoutes.login}
               text="Back to Login"
               color="#385185"
             />

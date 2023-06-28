@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const DefaultButtonWrapp = styled.button<{
-  fullWidth?: boolean;
+  $fullWidth?: boolean;
   $bgColor?: string;
   rest?: any;
 }>`
@@ -18,8 +18,8 @@ export const DefaultButtonWrapp = styled.button<{
     cursor: not-allowed;
   }
 
-  ${({ fullWidth }) =>
-    fullWidth &&
+  ${({ $fullWidth }) =>
+    $fullWidth &&
     css`
       width: 100%;
     `}
