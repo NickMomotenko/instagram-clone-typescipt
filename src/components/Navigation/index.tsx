@@ -29,7 +29,12 @@ const list = [
   },
 ];
 
-const Navigation = ({ isActive, onClick }) => {
+type NavigationProps = {
+  $isActive?: boolean;
+  onClick?: () => void;
+};
+
+const Navigation: React.FC<NavigationProps> = ({ $isActive, onClick }) => {
   const windowSize = useWindowResize();
 
   const isMobileWidth = windowSize <= 480;
@@ -39,7 +44,7 @@ const Navigation = ({ isActive, onClick }) => {
     : list;
 
   return (
-    <NavigationWrapp isActive={isActive}>
+    <NavigationWrapp $isActive={$isActive}>
       <NavigationList>
         {navigationList.map(({ id, title, link }) => {
           return (

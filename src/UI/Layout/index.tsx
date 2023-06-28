@@ -8,9 +8,9 @@ export const Column: React.FC<ColumnProps> = ({ children, ...props }) => {
 };
 
 export const Row: React.FC<RowProps> = React.forwardRef(
-  ({ center, children, ...rest }, ref) => {
+  ({ children, ...rest }, ref) => {
     return (
-      <RowWrapp ref={ref} center={center} {...rest}>
+      <RowWrapp ref={ref} {...rest}>
         {children}
       </RowWrapp>
     );

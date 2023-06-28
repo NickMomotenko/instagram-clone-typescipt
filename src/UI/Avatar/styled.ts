@@ -1,15 +1,11 @@
-import React from "react";
-
 import styled, { css } from "styled-components";
 
-import Text from "../Text";
-
-const AvatarWrapp = styled.div`
+export const AvatarWrapp = styled.div<{ size?: number; noGradient?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ${(props) => (props.size ? `${props.size}px` : "40px")};
-  height: ${(props) => (props.size ? `${props.size}px` : "40px")};
+  width: ${({ size }) => (size ? `${size}px` : "40px")};
+  height: ${({ size }) => (size ? `${size}px` : "40px")};
   border-radius: 50%;
   border-image-slice: 20;
 
@@ -51,8 +47,8 @@ const AvatarWrapp = styled.div`
     transform: rotate(888deg);
   }
 
-  ${(props) =>
-    props.noGradient &&
+  ${({ noGradient }) =>
+    noGradient &&
     css`
       box-shadow: 0 0 2px #202091;
 
@@ -63,21 +59,7 @@ const AvatarWrapp = styled.div`
     `}
 `;
 
-// const AvatarImg = styled.img.attrs(({ url }) => ({
-//   src: url,
-// }))`
-//   display: block;
-//   max-height: 100%;
-//   width: 100%;
-//   object-fit: cover;
-//   border-radius: 50%;
-//   position: relative;
-//   z-index: 2;
-// `;
-
-// <AvatarImg url={url} />
-
-const AvatarImg = styled.div`
+export const AvatarImg = styled.div`
   display: block;
 
   max-height: 100%;
@@ -89,26 +71,3 @@ const AvatarImg = styled.div`
 
   text-align: center;
 `;
-
-const Avatar = (props) => {
-  const { url, fullname, textSize } = props;
-
-  const shortFormOfFullname = fullname
-    ?.split(" ")
-    .map((word) => word.charAt())
-    .join("");
-
-  return (
-    <AvatarWrapp {...props}>
-      <AvatarImg>
-        <Text
-          text={shortFormOfFullname}
-          bold
-          style={{ fontSize: textSize ? `${textSize}px` : 16 }}
-        />
-      </AvatarImg>
-    </AvatarWrapp>
-  );
-};
-
-export default Avatar;

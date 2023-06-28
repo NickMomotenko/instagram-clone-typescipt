@@ -23,16 +23,16 @@ export const BurgerLine = styled.div`
   }
 `;
 
-export const BurgerWrapp = styled.button`
-  display:none;
+export const BurgerWrapp = styled.button<{ $isActive?: boolean }>`
+  display: none;
   height: 18px;
   width: 25px;
   position: relative;
-  z-index:10;
+  z-index: 10;
 
   ${BurgerLine} {
-    ${({ isActive }) =>
-      isActive &&
+    ${({ $isActive }) =>
+      $isActive &&
       css`
         &:nth-child(1) {
           transform: rotate(45deg) translate(2px, -3px);
@@ -48,7 +48,7 @@ export const BurgerWrapp = styled.button`
       `}
   }
 
-  @media screen and (max-width:768px){
-    display:inline-block;
+  @media screen and (max-width: 768px) {
+    display: inline-block;
   }
 `;

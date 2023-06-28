@@ -32,12 +32,12 @@ import { useWindowResize } from "../../hooks/useWindowResize";
 import DirectSidebar from "./DirectSidebar";
 
 const Direct = () => {
-  const { messages, activeChatIndex, activeChat } = useSelector(
-    (state) => state.direct
-  );
-  const {
-    authUser: { user },
-  } = useSelector((state) => state.authUser);
+  // const { messages, activeChatIndex, activeChat } = useSelector(
+  //   (state) => state.direct
+  // );
+  // const {
+  //   authUser: { user },
+  // } = useSelector((state) => state.authUser);
 
   const [isGeneralChatActive, setIsGeneralChatActive] = useState(false);
 
@@ -45,48 +45,44 @@ const Direct = () => {
 
   const isTabletWidth = useWindowResize() <= 768;
 
-  React.useEffect(() => {
-    document.body.style.overflow = "hidden";
+  // React.useEffect(() => {
+  //   document.body.style.overflow = "hidden";
 
-    normalizeDirectContentBodyScroll();
-  }, []);
+  //   normalizeDirectContentBodyScroll();
+  // }, []);
 
-  React.useEffect(() => {
-    normalizeDirectContentBodyScroll();
-  }, [messages, activeChat]);
+  // React.useEffect(() => {
+  //   normalizeDirectContentBodyScroll();
+  // }, [messages, activeChat]);
 
   const sendInput = useInput({ initialValue: "" });
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const onChatItemClick = (id) => {
-    const searchableChat = messages.find((chat) => chat.id === id);
-
-    if (!searchableChat) return;
-
-    dispatch({ type: SET_ACTIVE_CHAT, payload: searchableChat });
-
-    if (isTabletWidth && isGeneralChatActive) setIsGeneralChatActive(false);
+  const onChatItemClick = (id: number | string) => {
+    // const searchableChat = messages.find((chat) => chat.id === id);
+    // if (!searchableChat) return;
+    // dispatch({ type: SET_ACTIVE_CHAT, payload: searchableChat });
+    // if (isTabletWidth && isGeneralChatActive) setIsGeneralChatActive(false);
   };
 
-  const handleSend = (text) => {
-    if (!text) return;
-
-    dispatch({ type: ADD_MESSAGE, payload: { chatId: activeChat?.id, text } });
-    sendInput.clearValue();
+  const handleSend = (text: string) => {
+    // if (!text) return;
+    // dispatch({ type: ADD_MESSAGE, payload: { chatId: activeChat?.id, text } });
+    // sendInput.clearValue();
   };
 
-  const sendInputOnKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      handleSend(sendInput?.value);
-    }
+  const sendInputOnKeyDown = (e: any) => {
+    // if (e.keyCode === 13) {
+    //   handleSend(sendInput?.value);
+    // }
   };
 
   function normalizeDirectContentBodyScroll() {
-    messagesBodyRef?.current.scrollTo(
-      0,
-      messagesBodyRef?.current?.scrollHeight
-    );
+    // messagesBodyRef?.current.scrollTo(
+    //   0,
+    //   messagesBodyRef?.current?.scrollHeight
+    // );
   }
 
   return (
@@ -95,26 +91,26 @@ const Direct = () => {
       <Container style={{ width: 1000 }}>
         <DirectContent>
           <Row center btw style={{ marginBottom: 25 }}>
-            <Text text="Chats" style={{ fontSize: 25 }} bold />
+            <Text text="Chats" $bold style={{ fontSize: 25 }} />
             <AllChatButton
               text="All chats"
               onClick={() => setIsGeneralChatActive(!isGeneralChatActive)}
             />
           </Row>
           <Row style={{ width: "100%", position: "relative" }}>
-            <DirectSidebar
+            {/* <DirectSidebar
               messages={messages}
               activeChat={activeChat}
               onChatItemClick={onChatItemClick}
               setIsGeneralChatActive={setIsGeneralChatActive}
               isGeneralChatActive={isGeneralChatActive}
-            />
+            /> */}
             <DirectBodyContent
               ref={messagesBodyRef}
-              isGeneralChatActive={isGeneralChatActive}
+              // isGeneralChatActive={isGeneralChatActive}
             >
               <Block as="ul" style={{ padding: 15 }}>
-                {messages[activeChatIndex]?.data.map(
+                {/* {messages[activeChatIndex]?.data.map(
                   ({ id, text, time, isMe }) => (
                     <DirectMessage key={id} as="li" position={isMe}>
                       <Block
@@ -141,7 +137,7 @@ const Direct = () => {
                       </DirectMessageText>
                     </DirectMessage>
                   )
-                )}
+                )} */}
               </Block>
               <DirectBottomBar>
                 <Row>

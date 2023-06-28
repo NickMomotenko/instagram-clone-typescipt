@@ -2,7 +2,12 @@ import React from "react";
 
 import { LogoutButtonWrapp, LogoutButtonIcon } from "./styled";
 
-const LogoutButton = ({ icon , onClick }) => {
+type LogoutButtonProps = {
+  icon?: string;
+  onClick?: () => void;
+};
+
+const LogoutButton: React.FC<LogoutButtonProps> = ({ icon, onClick }) => {
   return (
     <LogoutButtonWrapp onClick={onClick}>
       <LogoutButtonIcon src={icon} />

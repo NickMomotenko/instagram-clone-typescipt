@@ -148,8 +148,8 @@ export const DirectBodyContent = styled(DirectContentBlockStyles)`
   @media screen and (max-width: 768px) {
     transition: opacity 0.5s;
 
-    ${(props) =>
-      props.isGeneralChatActive &&
+    ${({ isGeneralChatActive }) =>
+      isGeneralChatActive &&
       css`
         opacity: 0.4;
       `}
@@ -161,7 +161,7 @@ export const AllChatButton = styled(DefaultButton)`
   color: rgba(119, 81, 81, 0.54);
   border-color: rgba(119, 81, 81, 0.54);
 
-  @media screen and (min-width:768px){
-    display:none;
+  @media screen and (min-width: 768px) {
+    display: none;
   }
 `;

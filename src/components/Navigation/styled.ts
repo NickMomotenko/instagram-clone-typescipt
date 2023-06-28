@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 
 import { Link } from "react-router-dom";
 
-export const NavigationWrapp = styled.nav`
+export const NavigationWrapp = styled.nav<{ $isActive?: boolean }>`
   @media screen and (max-width: 768px) {
     display: none;
   }
 
-  ${({ isActive }) =>
-    isActive &&
+  ${({ $isActive }) =>
+    $isActive &&
     css`
       display: flex !important;
       align-items: center;
@@ -48,7 +48,7 @@ export const NavigationLink = styled(Link)`
   color: black;
 `;
 
-export const NavigationItem = styled.li`
+export const NavigationItem = styled.li<{ isLogoutButton?: boolean }>`
   margin-right: 23px;
 
   &:last-child {
@@ -56,8 +56,8 @@ export const NavigationItem = styled.li`
   }
 
   ${NavigationLink} {
-    ${(props) =>
-      props.isLogoutButton &&
+    ${({ isLogoutButton }) =>
+      isLogoutButton &&
       css`
         border: 1px solid black;
         padding: 5px;

@@ -8,6 +8,7 @@ export type RowProps = {
   children?: React.ReactNode;
   ref?: any;
   center?: boolean;
+  btw?: boolean;
   style?: any;
 };
 
@@ -15,6 +16,7 @@ export type BlockProps = {
   rest?: any;
   children?: React.ReactNode;
   style?: any;
+  as?: string;
 };
 
 export type PaperProps = { props?: any; children?: React.ReactNode; ref?: any };

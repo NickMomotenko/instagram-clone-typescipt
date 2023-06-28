@@ -59,7 +59,7 @@ export const HeaderLogoutButton = styled(Block)`
   }
 `;
 
-export const HeaderSearchBar = styled.div`
+export const HeaderSearchBar = styled.div<{ isSearchLabelActive?: boolean }>`
   position: relative;
 
   @media screen and (max-width: 480px) {
@@ -81,8 +81,8 @@ export const HeaderSearchBar = styled.div`
       max-width: 100%;
     }
 
-    ${(props) =>
-      props.isSearchLabelActive &&
+    ${({ isSearchLabelActive }) =>
+      isSearchLabelActive &&
       css`
         top: 0;
       `}

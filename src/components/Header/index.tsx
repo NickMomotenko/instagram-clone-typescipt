@@ -20,7 +20,7 @@ import { useActive } from "../../hooks/useActive";
 
 import Container from "../Container";
 import Navigation from "../Navigation";
-import Logo from "../Logo";
+import { Logo } from "../Logo";
 import Burger from "../Burger";
 
 import Avatar from "../../UI/Avatar";
@@ -52,22 +52,22 @@ const Header = () => {
 
   const headerSearchPanelRef = React.useRef(null);
 
-  const dispath = useDispatch();
+  // const dispath = useDispatch();
 
   useClickOutside(headerSearchPanelRef, () => onCrossButtonClick(false));
 
-  React.useEffect(() => {
-    searchInput?.value.length === 0
-      ? isSearchBlock.setIsActive(false)
-      : isSearchBlock.setIsActive(true);
+  // React.useEffect(() => {
+  //   searchInput?.value.length === 0
+  //     ? isSearchBlock.setIsActive(false)
+  //     : isSearchBlock.setIsActive(true);
 
-    const userWithMatchedNameOrLastName = allDbUsers.filter(({ user }) => {
-      const lowerCaseFullname = user?.fullname?.toLowerCase();
-      return lowerCaseFullname.includes(searchInput?.value.toLowerCase());
-    });
+  //   const userWithMatchedNameOrLastName = allDbUsers.filter(({ user }) => {
+  //     const lowerCaseFullname = user?.fullname?.toLowerCase();
+  //     return lowerCaseFullname.includes(searchInput?.value.toLowerCase());
+  //   });
 
-    setSearchUsers(userWithMatchedNameOrLastName);
-  }, [searchInput?.value]);
+  //   // setSearchUsers(userWithMatchedNameOrLastName);
+  // }, [searchInput?.value]);
 
   React.useEffect(() => {
     isBurgerActive.isActive
@@ -75,7 +75,7 @@ const Header = () => {
       : (document.body.style.overflow = "auto");
   }, [isBurgerActive.isActive]);
 
-  function onCrossButtonClick(bool) {
+  function onCrossButtonClick(bool: boolean) {
     searchInput.clearValue();
     isSearchLabelActive.setIsActive(bool);
   }
@@ -86,7 +86,7 @@ const Header = () => {
         <Row center btw>
           <Logo />
           <Navigation
-            isActive={isBurgerActive.isActive}
+            $isActive={isBurgerActive.isActive}
             onClick={() => isBurgerActive.setIsActive(false)}
           />
           <HeaderSearchBar
@@ -132,7 +132,7 @@ const Header = () => {
                           fullname={fullname}
                         />
                         <Block style={{ marginLeft: 11, marginTop: -5 }}>
-                          <Text text={fullname} bold />
+                          <Text text={fullname} $bold />
                           <Text text={city} style={{ color: "#76777E" }} />
                         </Block>
                       </HeaderAllUserItem>
@@ -151,14 +151,14 @@ const Header = () => {
             <HeaderLogoutButton>
               <LogoutButton
                 icon={logoutIcon}
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispath({ type: LOGUT });
-                }}
+                // onClick={(e: any) => {
+                //   e.preventDefault();
+                //   dispath({ type: LOGUT });
+                // }}
               />
             </HeaderLogoutButton>
             <Burger
-              isActive={isBurgerActive.isActive}
+              $isActive={isBurgerActive.isActive}
               onClick={() =>
                 isBurgerActive.setIsActive(!isBurgerActive.isActive)
               }

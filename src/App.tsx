@@ -5,6 +5,7 @@ import { authRoutes, baseRoutes } from "./helpers/base-routes";
 
 import Preloader from "./pages/Preloader";
 import Login from "./pages/Login";
+import Direct from "./components/Direct";
 
 import LoginBlock from "./components/LoginForm/LoginBlock";
 import CreateNewAccount from "./components/LoginForm/CreateNewAccount";
@@ -17,7 +18,7 @@ export const App = () => {
 
       <Routes>
         {/* <Route path={baseRoutes.stories} element={<Stories />} /> */}
-        {/* <Route path={baseRoutes.direct} element={<Direct />} /> */}
+        <Route path={baseRoutes.direct} element={<Direct />} />
         <Route
           path={baseRoutes.login}
           element={<Login isPreloaderActive={false} />}
