@@ -13,12 +13,18 @@ import DefaultButton from "../../UI/DefaultButton";
 import { useInput } from "../../hooks/useInput";
 
 import { CREATE_POST } from "../../redux/posts/types";
+import { RootState } from "../../redux/store";
 
-const Popup = ({ isActive, setIsActive }) => {
+type PopupProps = {
+  isActive: boolean;
+  setIsActive: (arg: boolean) => void;
+};
+
+const Popup: React.FC<PopupProps> = ({ isActive, setIsActive }) => {
   const dispath = useDispatch();
   const {
     authUser: { user },
-  } = useSelector((state) => state.authUser);
+  } = useSelector((state: RootState) => state.authUser);
 
   const postInput = useInput({
     option: { symbolLimit: 255 },
@@ -40,29 +46,25 @@ const Popup = ({ isActive, setIsActive }) => {
   };
 
   return (
-    <PopupWrapp active={isActive}>
+    <PopupWrapp $active={isActive}>
       <PopupContent>
         <Row style={{ paddingLeft: 5 }} center>
           <Block style={{ marginRight: 11 }}>
             <Avatar url={user?.avatar} fullname={user?.fullname} size={40} />
           </Block>
           <Block>
-            <Text text={user?.fullname} bold />
+            <Text text={user?.fullname} $bold />
           </Block>
         </Row>
         <Row style={{ marginTop: 20 }}>
           <DefaultButton
-            // type ????
-            // type="image"
             text="Add photos"
-            bgcolor="transparent"
+            $bgColor="transparent"
             style={{ border: "1px solid #9d6b6b", color: "#9d6b6b" }}
           />
           <DefaultButton
-            // type ????
-            // type="image"
             text="Add videos"
-            bgcolor="transparent"
+            $bgColor="transparent"
             style={{
               border: "1px solid #525ab7",
               color: "#525ab7",
@@ -85,15 +87,15 @@ const Popup = ({ isActive, setIsActive }) => {
           <Row style={{ marginTop: 20 }}>
             <DefaultButton
               text="Create"
-              fullWidth
+              $fullWidth
               disabled={isCreateButtonDisabled}
               style={{ marginRight: 20 }}
               onClick={createPopup}
             />
             <DefaultButton
               text="Cancel"
-              fullWidth
-              bgcolor="#0095f6"
+              $fullWidth
+              $bgColor="#0095f6"
               onClick={cancelClick}
             />
           </Row>

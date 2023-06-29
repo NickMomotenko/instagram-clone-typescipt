@@ -48,7 +48,7 @@ export const NavigationLink = styled(Link)`
   color: black;
 `;
 
-export const NavigationItem = styled.li<{ isLogoutButton?: boolean }>`
+export const NavigationItem = styled.li<{ $isLogoutButton?: boolean }>`
   margin-right: 23px;
 
   &:last-child {
@@ -56,8 +56,8 @@ export const NavigationItem = styled.li<{ isLogoutButton?: boolean }>`
   }
 
   ${NavigationLink} {
-    ${({ isLogoutButton }) =>
-      isLogoutButton &&
+    ${({ $isLogoutButton }) =>
+      $isLogoutButton &&
       css`
         border: 1px solid black;
         padding: 5px;

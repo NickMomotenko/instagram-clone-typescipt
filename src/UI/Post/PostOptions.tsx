@@ -7,11 +7,21 @@ import {
   PostOptionsList,
 } from "./PostOptionsStyles";
 
-const PostOptions = ({ options, active, onClick }) => {
+type PostOptionsProps = {
+  options?: any;
+  active?: boolean;
+  onClick?: () => void;
+};
+
+const PostOptions: React.FC<PostOptionsProps> = ({
+  options,
+  active,
+  onClick,
+}) => {
   return (
-    <PostOptionsWrapp active={active} onClick={onClick}>
+    <PostOptionsWrapp $active={active} onClick={onClick}>
       <PostOptionsList as="ul">
-        {options.map(({ id, title }) => (
+        {options.map(({ id, title }: any) => (
           <PostOptionsItem key={id} as="li">
             <PostOptionsLink as="button" onClick={onClick}>
               {title}

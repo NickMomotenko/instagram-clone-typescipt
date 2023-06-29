@@ -6,7 +6,11 @@ import { CustomSliderWrapp, CustomSliderItem, SliderButton } from "./styled";
 
 import { Row } from "../../UI/Layout";
 
-const CustomSlider = ({ slides }) => {
+type CustomSliderProps = {
+  slides?: any;
+};
+
+const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const wrappRef = React.useRef(null);

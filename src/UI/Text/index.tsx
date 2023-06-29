@@ -10,6 +10,7 @@ type TextProps = {
   to?: string;
   color?: string;
   $center?: boolean;
+  href?: string;
 };
 
 const Text: React.FC<TextProps> = ({

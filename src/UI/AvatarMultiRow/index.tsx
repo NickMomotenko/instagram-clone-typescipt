@@ -1,23 +1,12 @@
 import React from "react";
 
-import styled from "styled-components";
-import Avatar from "../Avatar";
+import { SingleAvatar, AvatarMultiRowWrapp } from "./styled";
 
-const SingleAvatar = styled(Avatar)`
-  margin-left: -5px;
-  background-color: #fff;
+type AvatarMultiRowProps = {
+  data: any[];
+};
 
-  &:first-child {
-    margin-left: 0;
-  }
-`;
-
-const AvatarMultiRowWrapp = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const AvatarMultiRow = ({ data = [] }) => {
+const AvatarMultiRow: React.FC<AvatarMultiRowProps> = ({ data = [] }) => {
   const isMoreThanThreeAvatars = data?.length >= 3;
   const changedData = isMoreThanThreeAvatars ? data?.slice(0, 3) : data;
 

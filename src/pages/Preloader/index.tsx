@@ -11,7 +11,7 @@ type PreloaderProps = {
   isActive?: boolean;
 };
 
-const Preloader: React.FC<PreloaderProps> = ({ isActive = false }) => {
+const Preloader: React.FC<PreloaderProps> = ({ isActive }) => {
   return (
     <PreloaderWrapp $activeStatus={isActive}>
       <PreloaderLogoBg>

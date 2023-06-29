@@ -3,9 +3,11 @@ import { Block } from "../Layout";
 
 import { PostCommentsWrapp } from "./PostCommentsStyles";
 
-export const PostOptionsWrapp = styled(PostCommentsWrapp)`
+export const PostOptionsWrapp = styled(PostCommentsWrapp)<{
+  $active?: boolean;
+}>`
   left: auto;
-  right: ${(props) => (props.active ? "0" : "-100%")};
+  right: ${({ $active }) => ($active ? "0" : "-100%")};
 
   display: flex;
   align-items: center;

@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 import { Row } from "../Layout";
 
-export const PostCommentsWrapp = styled.div`
+export const PostCommentsWrapp = styled.div<{$active?:boolean}>`
   position: absolute;
-  left: ${(props) => (props.active ? "0" : "-100%")};
+  left: ${({$active}) => $active ? "0" : "-100%"};
   top: 0;
-  opacity: ${(props) => (props.active ? "1" : "0")};
+  opacity: ${({$active}) => $active ? "1" : "0"};
 
   z-index: 20;
   transition: left 0.4s, right 0.4s, opacity 0.6s;

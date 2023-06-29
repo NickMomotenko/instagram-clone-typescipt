@@ -83,14 +83,14 @@ const Header = () => {
   return (
     <HeaderWrapp>
       <Container style={{ width: 1350 }}>
-        <Row center btw>
+        <Row center $btw>
           <Logo />
           <Navigation
             $isActive={isBurgerActive.isActive}
             onClick={() => isBurgerActive.setIsActive(false)}
           />
           <HeaderSearchBar
-            isSearchLabelActive={isSearchLabelActive.isActive}
+            $isSearchLabelActive={isSearchLabelActive.isActive}
             ref={headerSearchPanelRef}
           >
             <Row>

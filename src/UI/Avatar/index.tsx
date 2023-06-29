@@ -6,6 +6,8 @@ type AvatarProps = {
   url?: string;
   fullname?: string;
   textSize?: number | string;
+  size?: number;
+  as?: any;
 };
 
 const Avatar: React.FC<AvatarProps> = (props) => {

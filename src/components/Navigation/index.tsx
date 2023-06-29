@@ -48,7 +48,7 @@ const Navigation: React.FC<NavigationProps> = ({ $isActive, onClick }) => {
       <NavigationList>
         {navigationList.map(({ id, title, link }) => {
           return (
-            <NavigationItem key={id} isLogoutButton={title === "Logout"}>
+            <NavigationItem key={id} $isLogoutButton={title === "Logout"}>
               <NavigationLink to={link} onClick={onClick}>
                 {title}
               </NavigationLink>

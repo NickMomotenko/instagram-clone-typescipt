@@ -1,25 +1,18 @@
-import React from "react";
-
-import styled, { css } from "styled-components";
-
 import { Block } from "../Layout";
 import Text from "../Text";
 
-const TextOpenOrCloseWrapp = styled.div`
-  font-size: 14px;
-  color: #4f5160;
-  font-weight: 600;
+import { TextOpenOrCloseWrapp } from "./styled";
 
-  ${(props) =>
-    props.boolFlag === false &&
-    css`
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
-`;
+type TextOpenOrCloseProps = {
+  text: string;
+  boolFlag?: boolean;
+  buttonText?: string;
+  buttonTextColor?: string;
+  buttonClick?: () => void;
+  buttonPosition?: any;
+};
 
-const TextOpenOrClose = ({
+const TextOpenOrClose: React.FC<TextOpenOrCloseProps> = ({
   text = "",
   boolFlag,
   buttonText,

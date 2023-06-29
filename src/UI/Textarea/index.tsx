@@ -2,7 +2,11 @@ import React from "react";
 
 import { TextareaBody, TextareaWrapp, TextareaLimitCounter } from "./styled";
 
-const Textarea = (props) => {
+type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  currentLimit?: number | string;
+};
+
+const Textarea: React.FC<TextareaProps> = (props) => {
   const { currentLimit } = props;
 
   return (

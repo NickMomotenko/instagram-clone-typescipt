@@ -1,7 +1,7 @@
 import { SET_PRELOADER_STATUS } from "./types";
 
 const initialState = {
-  isPreloaderActive: false,
+  isPreloaderActive: true,
 };
 
 export const appReducer = (state = initialState, action) => {

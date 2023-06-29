@@ -6,7 +6,15 @@ import Icon from "../Icon";
 
 const ButtonWrapp = styled.button``;
 
-const Button = ({ text, icon, active, ...props }) => {
+type ButtonProps = {
+  text?: string;
+  icon?: string;
+  active?: boolean;
+  onClick?: () => void;
+  style?: any;
+};
+
+const Button: React.FC<ButtonProps> = ({ text, icon, active, ...props }) => {
   return (
     <ButtonWrapp {...props}>
       {text && text}

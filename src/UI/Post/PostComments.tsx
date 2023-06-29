@@ -20,7 +20,19 @@ import DefaultButton from "../../UI/DefaultButton";
 
 import { ADD_COMMENT, CHANGE_COMMENT } from "../../redux/posts/types";
 
-const PostComments = ({ post, isCommentsBarActive, userId, onClick }) => {
+type PostCommentsProps = {
+  post?: any;
+  $isCommentsBarActive?: boolean;
+  userId?: number | string;
+  onClick?: () => void;
+};
+
+const PostComments: React.FC<PostCommentsProps> = ({
+  post,
+  $isCommentsBarActive,
+  userId,
+  onClick,
+}) => {
   const [isChangeComment, setIsChangeComment] = useState(false);
   const [currentComment, setCurrentComment] = useState(null);
 
@@ -36,7 +48,7 @@ const PostComments = ({ post, isCommentsBarActive, userId, onClick }) => {
   const addButtonText = isChangeComment ? "Change" : "Add";
   const bgcolorAddButton = isChangeComment && "#b4384c";
 
-  const findComment = (comment) => {
+  const findComment = (comment: any) => {
     const { text } = comment;
 
     if (isChangeComment) {
@@ -65,7 +77,7 @@ const PostComments = ({ post, isCommentsBarActive, userId, onClick }) => {
   const changeComment = () => {
     const commentText = commentInput.value;
 
-    const updatedCommentsArr = post?.comments.map((comment) => {
+    const updatedCommentsArr = post?.comments.map((comment: any) => {
       if (comment?.id === currentComment?.id) {
         if (commentText === currentComment?.text) {
           return comment;
@@ -85,12 +97,12 @@ const PostComments = ({ post, isCommentsBarActive, userId, onClick }) => {
   const addButtonClickFunction = isChangeComment ? changeComment : addComment;
 
   return (
-    <PostCommentsWrapp active={isCommentsBarActive.isActive} onClick={onClick}>
+    <PostCommentsWrapp $active={$isCommentsBarActive.isActive} onClick={onClick}>
       <PostCommentsContent as={isEmpty ? "div" : "ul"}>
         {isEmpty ? (
           <Text text={noCommentsText} color="#fff" />
         ) : (
-          comments?.map((comment) => {
+          comments?.map((comment: any) => {
             const { id, user, text } = comment;
 
             const isMyComment = userId === user?.id;

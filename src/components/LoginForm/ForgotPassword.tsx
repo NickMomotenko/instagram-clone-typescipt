@@ -1,5 +1,3 @@
-import React from "react";
-
 import { useInput } from "../../hooks/useInput";
 import { useForm } from "../../hooks/useForm";
 
@@ -16,14 +14,12 @@ import { Link } from "react-router-dom";
 const ForgotPassword = () => {
   const password = useInput({ initialValue: "" });
 
-  // const { handleSubmit } = useForm(() =>
-  //   console.log("forgot pass is ready to submit")
-  // );
+  const { handleSubmit } = useForm(() =>
+    console.log("forgot pass is ready to submit")
+  );
 
   return (
-    <Form
-    // onSubmit={(e) => handleSubmit(e, [password])}
-    >
+    <Form onSubmit={(e) => handleSubmit(e, [password])}>
       <Block style={{ textAlign: "center" }}>
         <Text
           text="Trouble Logging In?"

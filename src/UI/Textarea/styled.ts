@@ -6,7 +6,7 @@ export const TextareaBody = styled.div`
   position: relative;
 `;
 
-export const TextareaWrapp = styled.textarea`
+export const TextareaWrapp = styled.textarea<{ transparent?: boolean }>`
   background: #f8fbff;
   box-shadow: inset 0px 4px 40px rgba(175, 193, 217, 0.12);
   border-radius: 8px;
@@ -26,8 +26,8 @@ export const TextareaWrapp = styled.textarea`
     color: #afc1d9;
   }
 
-  ${(props) =>
-    props.transparent &&
+  ${({ transparent }) =>
+    transparent &&
     css`
       background: transparent;
       box-shadow: none;

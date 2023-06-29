@@ -5,15 +5,16 @@ import { useSelector } from "react-redux";
 import { PostList, PostsWrapp } from "./styled";
 
 import Post from "../../UI/Post";
+import { RootState } from "../../redux/store";
 
 const Posts = () => {
-  const { authUser } = useSelector((state) => state.authUser);
-  const { posts } = useSelector((state) => state.posts);
+  const { authUser } = useSelector((state: RootState) => state.authUser);
+  const { posts } = useSelector((state: RootState) => state.posts);
 
   return (
     <PostsWrapp>
       <PostList style={{ marginBottom: -20 }}>
-        {posts?.map((post) => {
+        {posts?.map((post: any) => {
           const isMyPost = authUser.user.userId === post.user.id;
 
           return (

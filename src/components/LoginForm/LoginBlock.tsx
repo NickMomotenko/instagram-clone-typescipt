@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGIN } from "../../redux/auth/types";
 import Input from "../../UI/Input";
+import { AppDispatch } from "../../redux/store";
 
 const LoginBlock = () => {
   let email = useInput({
@@ -27,16 +28,14 @@ const LoginBlock = () => {
   });
   let password = useInput({ initialValue: "" });
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // const { handleSubmit } = useForm(() => {
-  //   dispatch({ type: LOGIN, payload: { data: [email.value, password.value] } });
-  // });
+  const { handleSubmit } = useForm(() => {
+    dispatch({ type: LOGIN, payload: { data: [email.value, password.value] } });
+  });
 
   return (
-    <Form
-    // onSubmit={(e) => handleSubmit(e, [email, password])}
-    >
+    <Form onSubmit={(e) => handleSubmit(e, [email, password])}>
       <LogoBlock>
         <Logo />
       </LogoBlock>

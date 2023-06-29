@@ -63,7 +63,20 @@ const POST_TYPES = {
   VIDEO: "video",
 };
 
-const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
+type PostProps = {
+  post: any;
+  authUser: any;
+  isMyPost?: boolean;
+  userId?: number | string;
+};
+
+const Post: React.FC<PostProps> = ({
+  post,
+  authUser,
+  isMyPost,
+  userId,
+  ...props
+}) => {
   const [like, setLike] = useState(false);
   const [comment, setComment] = useState(false);
   const [share, setShare] = useState(false);
@@ -104,7 +117,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
     };
   }, []);
 
-  const handleClickOutsidePost = (e) => {
+  const handleClickOutsidePost = (e: any) => {
     if (commentRef?.current?.contains(e.target)) {
       return;
     } else {
@@ -113,7 +126,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
     }
   };
 
-  const likePost = (post) => {
+  const likePost = (post: any) => {
     if (!like) {
       setLike(true);
       dispath({ type: LIKE_POST, id: post.id });
@@ -127,7 +140,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
     isCommentsBarActive.setIsActive(true);
   };
 
-  const savePost = (post) => {
+  const savePost = (post: any) => {
     if (!save) {
       setSave(true);
 
@@ -165,7 +178,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
           />
         </Block>
         <Block>
-          <Text text={user?.fullname} bold />
+          <Text text={user?.fullname} $bold />
           <Text text={user?.city} color="#76777E" />
         </Block>
         <Button
@@ -205,7 +218,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
                 Liked by{" "}
                 <Text
                   text={`${likedTextWithCommentators}`}
-                  bold
+                  $bold
                   style={{ fontSize: 13, display: "inline-block" }}
                 />
               </PostLikedText>
@@ -242,7 +255,7 @@ const Post = ({ post, authUser, isMyPost, userId, ...props }) => {
       </Block>
       <PostComments
         post={post}
-        isCommentsBarActive={isCommentsBarActive}
+        $isCommentsBarActive={isCommentsBarActive}
         userId={userId}
         // onClick={() => isCommentsBarActive.setIsActive(false)}
       />
