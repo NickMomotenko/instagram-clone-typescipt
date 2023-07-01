@@ -6,16 +6,19 @@ import { PostList, PostsWrapp } from "./styled";
 
 import Post from "../../UI/Post";
 import { RootState } from "../../redux/store";
+import { IPost } from "../../redux/types";
 
 const Posts = () => {
   const { authUser } = useSelector((state: RootState) => state.authUser);
-  const { posts } = useSelector((state: RootState) => state.posts);
+  const { posts }: IPost[] | any = useSelector(
+    (state: RootState) => state.posts
+  );
 
   return (
     <PostsWrapp>
       <PostList style={{ marginBottom: -20 }}>
-        {posts?.map((post: any) => {
-          const isMyPost = authUser.user.userId === post.user.id;
+        {posts?.map((post: IPost) => {
+          const isMyPost = authUser.user.userId === post?.user.id;
 
           return (
             <Post

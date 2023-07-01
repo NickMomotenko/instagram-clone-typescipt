@@ -5,7 +5,7 @@ import { TextOpenOrCloseWrapp } from "./styled";
 
 type TextOpenOrCloseProps = {
   text: string;
-  boolFlag?: boolean;
+  $boolFlag?: boolean;
   buttonText?: string;
   buttonTextColor?: string;
   buttonClick?: () => void;
@@ -14,7 +14,7 @@ type TextOpenOrCloseProps = {
 
 const TextOpenOrClose: React.FC<TextOpenOrCloseProps> = ({
   text = "",
-  boolFlag,
+  $boolFlag,
   buttonText,
   buttonTextColor,
   buttonClick,
@@ -31,13 +31,13 @@ const TextOpenOrClose: React.FC<TextOpenOrCloseProps> = ({
         marginBottom: !isWithButton ? 14 : 0,
       }}
     >
-      <TextOpenOrCloseWrapp boolFlag={boolFlag}>{text}</TextOpenOrCloseWrapp>
+      <TextOpenOrCloseWrapp $boolFlag={$boolFlag}>{text}</TextOpenOrCloseWrapp>
       {isWithButton && (
         <Text
           as="button"
           text={buttonText}
-          bold
-          color={buttonTextColor}
+          $bold
+          $textColor={buttonTextColor}
           onClick={buttonClick}
           style={{ alignSelf: buttonPosition ? buttonPosition : "flex-end" }}
         />

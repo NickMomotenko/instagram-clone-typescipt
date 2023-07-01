@@ -1,4 +1,5 @@
 import { posts as postsData, authUser } from "../mockData";
+import { IPost } from "../types";
 
 import {
   LIKE_POST,
@@ -7,23 +8,20 @@ import {
   CREATE_POST,
   ADD_COMMENT,
   CHANGE_COMMENT,
+  DELETE_COMMENT,
 } from "./types";
-
-// import { useDate } from "../../hooks/useDate";
-
-// const { dayNumber, monthName, year, weekName } = useDate();
 
 export const initialState = { posts: postsData };
 
-export const postsReducer = (state = initialState, action) => {
+export const postsReducer = (state = initialState, action: any) => {
   const { posts } = state;
 
   switch (action.type) {
     case LIKE_POST: {
       const { id } = action;
 
-      const searchablePost = posts.find((post) => post.id === id);
-      const searchablePostIndex = posts.indexOf(searchablePost);
+      const searchablePost: IPost | any = posts.find((post) => post.id === id);
+      const searchablePostIndex: number = posts.indexOf(searchablePost);
 
       const updatedPost = {
         ...searchablePost,
@@ -46,7 +44,7 @@ export const postsReducer = (state = initialState, action) => {
     case DISLIKE_POST: {
       const { id } = action;
 
-      const searchablePost = posts.find((post) => post.id === id);
+      const searchablePost: IPost = posts.find((post) => post.id === id);
       const searchablePostIndex = posts.indexOf(searchablePost);
 
       const searchablePostLikedData = searchablePost?.liked;
@@ -103,9 +101,11 @@ export const postsReducer = (state = initialState, action) => {
     }
 
     case ADD_COMMENT: {
-      const { id, text } = action.data;
+      const { id: postId, text } = action.payload;
 
-      const searchablePost = posts.find((post) => post.id === id);
+      const searchablePost: IPost | any = posts.find(
+        (post: IPost | any) => post.id === postId
+      );
       const searchablePostIndex = posts.indexOf(searchablePost);
 
       const searchablePostComments = searchablePost.comments;
@@ -125,11 +125,54 @@ export const postsReducer = (state = initialState, action) => {
       return { ...state, posts: [...updatedData] };
     }
 
-    case CHANGE_COMMENT: {
-      const { updatedPost } = action;
+    case DELETE_COMMENT: {
+      const { postId, commentId } = action.payload;
 
-      const searchablePost = posts.find((post) => post.id === updatedPost.id);
+      const searchablePost: IPost | any = posts.find(
+        (post: IPost | any) => post.id === postId
+      );
       const searchablePostIndex = posts.indexOf(searchablePost);
+
+      const updatedComments = [
+        ...searchablePost.comments.filter(
+          (comment: any) => comment.id !== commentId
+        ),
+      ];
+
+      const updatedPost = {
+        ...searchablePost,
+        comments: [...updatedComments],
+      };
+
+      const updatedData = [...posts];
+
+      updatedData.splice(searchablePostIndex, 1, updatedPost);
+
+      return { ...state, posts: [...updatedData] };
+    }
+
+    case CHANGE_COMMENT: {
+      const { postId, commentId, text } = action.payload;
+
+      const searchablePost: IPost | any = posts.find(
+        (post: IPost | any) => post.id === postId
+      );
+      const searchablePostIndex = posts.indexOf(searchablePost);
+
+      const comments = [
+        ...searchablePost?.comments.map((comment: any) => {
+          if (comment.id === commentId) {
+            return { ...comment, text };
+          }
+
+          return comment;
+        }),
+      ];
+
+      const updatedPost = {
+        ...searchablePost,
+        comments: [...comments],
+      };
 
       const updatedData = [...posts];
 

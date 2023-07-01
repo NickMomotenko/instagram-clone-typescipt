@@ -1,22 +1,30 @@
 import React from "react";
 
-import styled from "styled-components";
-
 import Icon from "../Icon";
 
-const ButtonWrapp = styled.button``;
+import { ButtonWrapp } from "./styled";
+import { BView } from "./types";
 
-type ButtonProps = {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   text?: string;
   icon?: string;
   active?: boolean;
   onClick?: () => void;
   style?: any;
+  mute?: boolean;
+  view?: BView;
+  fill?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ text, icon, active, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  icon,
+  active,
+  fill,
+  ...rest
+}) => {
   return (
-    <ButtonWrapp {...props}>
+    <ButtonWrapp {...rest}>
       {text && text}
       {icon && <Icon url={icon} fill={active ? "red" : "#D7E0EB"} />}
     </ButtonWrapp>

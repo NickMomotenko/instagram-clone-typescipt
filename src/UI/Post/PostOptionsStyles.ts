@@ -30,3 +30,17 @@ export const PostOptionsLink = styled(Block)`
   color: #fff;
   font-size: 18px;
 `;
+
+export const PostOptionsContent = styled.div`
+  width: 100%;
+`;
+
+export const PostOptionsBtnBack = styled.div`
+  position: absolute;
+  top: 30px;
+  left: 20px;
+
+  svg path{
+    fill: #fff;
+  }
+`;

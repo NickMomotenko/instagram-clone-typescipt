@@ -86,7 +86,7 @@ const EditGeneral = () => {
         <EditGeneralAvatar>
           <Avatar
             size={90}
-            textSize={22}
+            $textSize={22}
             {...user}
             style={{ marginBottom: 20 }}
           />

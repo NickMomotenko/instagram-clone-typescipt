@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const AvatarWrapp = styled.div<{ size?: number; noGradient?: boolean }>`
+export const AvatarWrapp = styled.div<{ size?: number; $noGradient?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +47,8 @@ export const AvatarWrapp = styled.div<{ size?: number; noGradient?: boolean }>`
     transform: rotate(888deg);
   }
 
-  ${({ noGradient }) =>
-    noGradient &&
+  ${({ $noGradient }) =>
+    $noGradient &&
     css`
       box-shadow: 0 0 2px #202091;
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 
@@ -18,27 +18,38 @@ import Text from "../Text";
 import Input from "../../UI/Input";
 import DefaultButton from "../../UI/DefaultButton";
 
-import { ADD_COMMENT, CHANGE_COMMENT } from "../../redux/posts/types";
+import {
+  ADD_COMMENT,
+  CHANGE_COMMENT,
+  DELETE_COMMENT,
+} from "../../redux/posts/types";
+import { IPostComment } from "../../redux/types";
+import Button from "../Button";
 
 type PostCommentsProps = {
   post?: any;
-  $isCommentsBarActive?: boolean;
+  isCommentsBarActive?: {
+    isActive?: boolean;
+    setIsActive?: () => void;
+  };
   userId?: number | string;
   onClick?: () => void;
 };
 
 const PostComments: React.FC<PostCommentsProps> = ({
   post,
-  $isCommentsBarActive,
+  isCommentsBarActive,
   userId,
   onClick,
 }) => {
   const [isChangeComment, setIsChangeComment] = useState(false);
-  const [currentComment, setCurrentComment] = useState(null);
+  const [currentComment, setCurrentComment] = useState<any>(null);
 
   const dispath = useDispatch();
 
-  const commentInput = useInput({ initialValue: "test" });
+  const commentInputRef = useRef<any>(null);
+
+  const commentInput = useInput({ initialValue: "" });
 
   const { comments } = post;
 
@@ -48,61 +59,77 @@ const PostComments: React.FC<PostCommentsProps> = ({
   const addButtonText = isChangeComment ? "Change" : "Add";
   const bgcolorAddButton = isChangeComment && "#b4384c";
 
-  const findComment = (comment: any) => {
-    const { text } = comment;
-
-    if (isChangeComment) {
-      setIsChangeComment(false);
-      setCurrentComment(null);
-      commentInput.clearValue();
-    } else {
-      setIsChangeComment(true);
-      setCurrentComment(comment);
-      commentInput.setValue(text);
-    }
-  };
-
   const addComment = () => {
-    if (!commentInput.value) return;
+    if (!commentInput.value) {
+      commentInputRef.current.focus();
+      return;
+    }
 
-    // postAction("add_comment", { post, text: commentInput.value });
     dispath({
       type: ADD_COMMENT,
-      data: { id: post.id, text: commentInput.value },
+      payload: { id: post.id, text: commentInput.value },
     });
 
     commentInput.clearValue();
   };
 
-  const changeComment = () => {
-    const commentText = commentInput.value;
+  const changeComment = (commentId: number) => {
+    setIsChangeComment(true);
 
-    const updatedCommentsArr = post?.comments.map((comment: any) => {
-      if (comment?.id === currentComment?.id) {
-        if (commentText === currentComment?.text) {
-          return comment;
-        } else return { ...comment, text: commentText };
-      }
-      return comment;
+    const comment = post.comments.find(
+      (comment: any) => comment.id === commentId
+    );
+
+    commentInput.setValue(comment?.text);
+    setCurrentComment(comment);
+
+    commentInputRef.current.focus();
+  };
+
+  const changeComment2 = () => {
+    if (commentInput?.value === currentComment?.text) {
+      commentInput.clearValue();
+      setCurrentComment(null);
+      setIsChangeComment(false);
+      return;
+    }
+
+    dispath({
+      type: CHANGE_COMMENT,
+      payload: {
+        postId: post.id,
+        commentId: currentComment?.id,
+        text: commentInput.value,
+      },
     });
 
-    const updatedPost = { ...post, comments: updatedCommentsArr };
-
-    dispath({ type: CHANGE_COMMENT, updatedPost });
-    setIsChangeComment(false);
+    commentInput.clearValue();
     setCurrentComment(null);
-    commentInput.clearValue();
+    setIsChangeComment(false);
   };
 
-  const addButtonClickFunction = isChangeComment ? changeComment : addComment;
+  const deleteComment = (id: number | string) => {
+    dispath({
+      type: DELETE_COMMENT,
+      payload: {
+        postId: post.id,
+        commentId: id,
+      },
+    });
+  };
+
+  const addButtonClickFunction = !isChangeComment ? addComment : changeComment2;
 
   return (
-    <PostCommentsWrapp $active={$isCommentsBarActive.isActive} onClick={onClick}>
+    <PostCommentsWrapp
+      $active={isCommentsBarActive?.isActive}
+      // onClick={onClick}
+    >
       <PostCommentsContent as={isEmpty ? "div" : "ul"}>
         {isEmpty ? (
           <Text text={noCommentsText} color="#fff" />
         ) : (
-          comments?.map((comment: any) => {
+          comments?.map((comment: IPostComment) => {
             const { id, user, text } = comment;
 
             const isMyComment = userId === user?.id;
@@ -116,29 +143,34 @@ const PostComments: React.FC<PostCommentsProps> = ({
                   <Avatar
                     url={user?.avatar}
                     fullname={user?.fullname}
-                    textSize={11}
+                    $textSize={11}
                     size={20}
                   />
                 </Block>
                 <Block style={{ marginTop: -7, flex: 1 }}>
-                  <Row btw center>
+                  <Row $btw $center>
                     <Text
                       text={user?.fullname}
-                      color="#ffcdcd"
+                      $textColor="#ffcdcd"
                       as="a"
                       href="/post"
                     />
                     {isMyComment && (
-                      <Text
-                        as="button"
-                        text={changeButtonText}
-                        color="#fff"
-                        style={{ fontSize: 10, textDecoration: "underline" }}
-                        onClick={() => findComment(comment)}
-                      />
+                      <Block style={{ marginLeft: "auto" }}>
+                        <Button
+                          text="change"
+                          view="ghost"
+                          onClick={() => changeComment(id)}
+                        />
+                        <Button
+                          text="delete"
+                          view="ghost"
+                          onClick={() => deleteComment(id)}
+                        />
+                      </Block>
                     )}
                   </Row>
-                  <Text text={text} color="#fff" />
+                  <Text text={text} $textColor="#fff" />
                 </Block>
               </PostRow>
             );
@@ -148,6 +180,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
       <PostCommentsBottom>
         <Row>
           <Input
+            ref={commentInputRef}
             value={commentInput.value}
             onChange={commentInput.onChange}
             placeholder="Type comment"
@@ -155,7 +188,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
           />
           <DefaultButton
             text={addButtonText}
-            bgcolor={bgcolorAddButton}
+            $bgColor={bgcolorAddButton}
             onClick={addButtonClickFunction}
             style={{ marginLeft: 5, padding: "7px 15px" }}
           />

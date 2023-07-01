@@ -233,7 +233,7 @@ const Stories = () => {
         <StoriesCommentBody>
           <Text
             text="Stories"
-            bold
+            $bold
             style={{ fontSize: 20, marginBottom: 20 }}
           />
           <StoriesCommentList as="ul">
@@ -246,7 +246,7 @@ const Stories = () => {
                     <Avatar size={30} />
                     <Text
                       text={`user-${id}`}
-                      bold
+                      $bold
                       style={{ fontSize: 15, marginTop: 7 }}
                     />
                   </Block>

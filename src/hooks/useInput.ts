@@ -19,7 +19,7 @@ export const useInput = ({ initialValue = "", name = "test", option = {} }) => {
     }
   }, [value]);
 
-  const onChange = (e) => setValue(e.target.value);
+  const onChange = (e: any) => setValue(e.target.value);
 
   const checkValidity = () => {
     const baseValidityFunctions = [checkValueLength];
@@ -41,14 +41,6 @@ export const useInput = ({ initialValue = "", name = "test", option = {} }) => {
   };
 
   const onFocus = () => {};
-
-  // const onKeyDown = (e) => {
-  //   console.log(e);
-  // };
-
-  // function getFocus() {
-  //   ref?.current.focus();
-  // }
 
   const clearValue = () => setValue("");
 

@@ -13,6 +13,7 @@ export const VideoBottomControls = styled(Row)`
   z-index: 2;
   padding: 0 15px;
   width: 100%;
+  justify-content: space-between;
 `;
 
 export const VideoUpControls = styled(VideoBottomControls)`
@@ -20,7 +21,7 @@ export const VideoUpControls = styled(VideoBottomControls)`
   top: 15px;
 `;
 
-export const MuteButton = styled(Button)`
+export const MuteButton = styled(Button)<{ mute?: boolean }>`
   position: relative;
 
   &:before {

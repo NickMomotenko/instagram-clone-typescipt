@@ -90,7 +90,7 @@ const Edit = () => {
       >
         <EditHeader>
           <Row btw center style={{ marginBottom: 20 }}>
-            <Text text="Edit profile" bold style={{ fontSize: 18 }} />
+            <Text text="Edit profile" $bold style={{ fontSize: 18 }} />
             <EditExitButton onClick={onCancelButton}>
               <EditExitIcon src={closeIcon} />
             </EditExitButton>

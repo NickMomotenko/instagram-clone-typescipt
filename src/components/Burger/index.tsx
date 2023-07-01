@@ -1,15 +1,16 @@
 import React from "react";
-import { useActive } from "../../hooks/useActive";
 
 import { BurgerWrapp, BurgerLine } from "./styled";
 
-type BurgerProps = {};
+type BurgerProps = {
+  $isActive?: boolean;
+  onClick?: () => void;
+  style?: any;
+};
 
-const Burger: React.FC<BurgerProps> = (props) => {
-  const { isActive, onClick } = props;
-
+const Burger: React.FC<BurgerProps> = ({ $isActive, onClick, ...rest }) => {
   return (
-    <BurgerWrapp $isActive={isActive} onClick={onClick} {...props}>
+    <BurgerWrapp $isActive={$isActive} onClick={onClick} {...rest}>
       <BurgerLine />
       <BurgerLine />
       <BurgerLine />

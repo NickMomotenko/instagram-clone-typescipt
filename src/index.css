@@ -19,6 +19,20 @@
 
 * {
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ebe7e7;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    /* фон */
+    background: transparent;
+  }
 }
 
 body,

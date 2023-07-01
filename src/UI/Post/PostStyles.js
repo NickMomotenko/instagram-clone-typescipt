@@ -21,9 +21,7 @@ export const PostWrapp = styled.div`
   overflow: hidden;
 `;
 
-export const PostImage = styled.img.attrs(({ url }) => ({
-  src: url,
-}))`
+export const PostImage = styled.img`
   display: block;
   max-width: 100%;
   border-radius: 15px;
@@ -50,4 +48,36 @@ export const PostLikedText = styled.div`
   font-size: 13px;
   color: #1b1d28;
   font-weight: 400;
+`;
+
+export const PostShareToWrapp = styled.div``;
+
+export const PostShareToList = styled.ul`
+  display: flex;
+  align-items: center;
+`;
+
+export const PostShareToItem = styled.li`
+  width: 25px;
+  height: 25px;
+  margin-right: 15px;
+
+  button {
+    display: block;
+  }
+
+  path,
+  g {
+    fill: "#fff";
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+
+export const PostReportWrapp = styled.div``;
+
+export const PostReportTextarea = styled.div`
+  margin-bottom: 15px;
 `;

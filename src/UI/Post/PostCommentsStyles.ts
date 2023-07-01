@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 import { Row } from "../Layout";
 
-export const PostCommentsWrapp = styled.div<{$active?:boolean}>`
+export const PostCommentsWrapp = styled.div<{ $active?: boolean }>`
   position: absolute;
-  left: ${({$active}) => $active ? "0" : "-100%"};
+  left: ${({ $active }) => ($active ? "0" : "-100%")};
   top: 0;
-  opacity: ${({$active}) => $active ? "1" : "0"};
+  opacity: ${({ $active }) => ($active ? "1" : "0")};
 
   z-index: 20;
   transition: left 0.4s, right 0.4s, opacity 0.6s;
@@ -22,7 +22,8 @@ export const PostCommentsWrapp = styled.div<{$active?:boolean}>`
 
 export const PostRow = styled.div`
   margin-bottom: 15px;
-  display:flex;
+  display: flex;
+  padding: 5px;
 
   &:last-child {
     margin-bottom: 0;
@@ -31,6 +32,8 @@ export const PostRow = styled.div`
 
 export const PostCommentsContent = styled.div`
   flex: 1;
+  overflow-y: auto;
+  margin-bottom: 5px;
 `;
 
 export const PostCommentsBottom = styled.div``;

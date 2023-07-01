@@ -40,7 +40,7 @@ const DirectSidebar = React.forwardRef(
                 style={{ marginRight: 17, flexShrink: 0 }}
               />
               <Block style={{ marginTop: -5, width: "100%", maxWidth: "75%" }}>
-                <Text text={user?.fullname} bold />
+                <Text text={user?.fullname} $bold />
                 <Row btw center>
                   <Text
                     text={data[data.length - 1]?.text}

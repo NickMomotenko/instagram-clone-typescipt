@@ -7,28 +7,28 @@ import { CustomSliderWrapp, CustomSliderItem, SliderButton } from "./styled";
 import { Row } from "../../UI/Layout";
 
 type CustomSliderProps = {
-  slides?: any;
+  slides?: string[];
 };
 
 const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const wrappRef = React.useRef(null);
-  const listRef = React.useRef(null);
+  const wrappRef = React.useRef<any>(null);
+  const listRef = React.useRef<any>(null);
 
   const config = {
     delta: 1, // min distance(px) before a swipe starts
-    preventDefaultTouchmoveEvent: true, // call e.preventDefault *See Details*
+    preventDefaultTouchmoveEvent: true, // call e.preventDefault *See Details*// call e.preventDefault *See Details*
     trackTouch: true, // track touch input
     trackMouse: true, // track mouse input
     rotationAngle: 0, // set a rotation angle
   };
 
-  const doTransition = (index) => {
+  const doTransition = (index: number) => {
     listRef.current.style.transform = `translateX(-${index * 100}%)`;
   };
 
-  const changeActiveSlide = (index) => {
+  const changeActiveSlide = (index: number) => {
     setActiveIndex(index);
     doTransition(index);
   };
@@ -59,14 +59,20 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
   return (
     <CustomSliderWrapp ref={wrappRef} {...handlers}>
       <Row ref={listRef} style={{ transition: "transform .4s" }}>
-        {slides.map((slide, index) => (
-          <CustomSliderItem key={index} url={slide} {...handlers}>
-            {++index}
-          </CustomSliderItem>
-        ))}
+        {slides?.map((slide: string, index: number) => {
+          console.log(slide);
+
+          return (
+            <CustomSliderItem
+              key={index}
+              style={{ background: `url(${slide})` }}
+              {...handlers}
+            />
+          );
+        })}
       </Row>
       <Row style={{ justifyContent: "center", marginTop: 10 }}>
-        {slides.map((btn, index) => (
+        {slides?.map((_, index) => (
           <SliderButton
             key={index}
             active={index === activeIndex}

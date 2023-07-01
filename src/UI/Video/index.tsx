@@ -25,7 +25,7 @@ const Video: React.FC<VideoProps> = ({ url }) => {
   const [duration, setDuration] = useState("");
   const [play, setPlay] = useState(false);
   const [mute, setMute] = useState(true);
-  const [currentTime, setCurrentTime] = useState("00:00");
+  const [currentTime, setCurrentTime] = useState<number | string>("00:00");
 
   const videoRef = React.createRef<any>();
   const videoWrapp = React.useRef(null);
@@ -58,7 +58,7 @@ const Video: React.FC<VideoProps> = ({ url }) => {
     }
   };
 
-  const handleChangeDuration = (seconds) => {
+  const handleChangeDuration = (seconds: any) => {
     secondsToMinutes(seconds, setDuration);
   };
 
@@ -72,7 +72,7 @@ const Video: React.FC<VideoProps> = ({ url }) => {
     mute ? setMute(false) : setMute(true);
   };
 
-  const handleChangeCurrentTime = (seconds) => {
+  const handleChangeCurrentTime = (seconds: any) => {
     secondsToMinutes(seconds, setCurrentTime);
   };
 
@@ -83,7 +83,7 @@ const Video: React.FC<VideoProps> = ({ url }) => {
         height="180px"
         width="100%"
         url={url}
-        muted={mute ? true : false}
+        muted={mute}
         playing={play ? true : false}
         style={{ borderRadius: "15px", overflow: "hidden" }}
         onDuration={(state: any) => handleChangeDuration(state)}
@@ -100,16 +100,15 @@ const Video: React.FC<VideoProps> = ({ url }) => {
           mute={mute}
         />
       </VideoUpControls>
-      <VideoBottomControls btw center>
+      <VideoBottomControls $center>
         <Button
           icon={play ? pauseButton : playButton}
           onClick={() => handleChangePlay()}
           style={{ height: 16 }}
         />
-
         <Text
           text={play ? currentTime : currentTime > 0 ? currentTime : duration}
-          color="#fff"
+          $textColor="#fff"
         />
       </VideoBottomControls>
     </VideoWrapp>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Avatar from "../Avatar";
 
-export const SingleAvatar = styled(Avatar)`
+export const SingleAvatar = styled(Avatar)<{ $noGradient?: boolean }>`
   margin-left: -5px;
   background-color: #fff;
 

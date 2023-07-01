@@ -77,7 +77,7 @@ const Profile = ({ popup }) => {
               <Block style={{ marginTop: -5 }}>
                 <Text
                   text={user?.nickname}
-                  bold
+                  $bold
                   style={{ fontSize: 20, marginBottom: 5 }}
                 />
                 <Text text={user?.job} color="#76777E" />
@@ -86,7 +86,7 @@ const Profile = ({ popup }) => {
             <Block style={{ marginBottom: 35 }}>
               <Text
                 text={user?.fullname}
-                bold
+                $bold
                 style={{ fontSize: 16, marginBottom: 12 }}
               />
               <Text text={user?.description} color="#76777e" />
@@ -104,7 +104,7 @@ const Profile = ({ popup }) => {
               <Block style={{ textAlign: "left" }}>
                 <Text
                   text="Your stories"
-                  bold
+                  $bold
                   style={{ fontSize: "16px", marginBottom: 25 }}
                 />
                 <Row as="ul" style={{ marginRight: -15 }}>
@@ -116,13 +116,13 @@ const Profile = ({ popup }) => {
                     >
                       <StorieButton to="/">
                         <Avatar
-                          noGradient
+                          $noGradient
                           url={storie.image}
                           style={{ marginBottom: 6 }}
                         />
                         <Text
                           text={storie.title}
-                          bold
+                          $bold
                           style={{ fontSize: "12px" }}
                         />
                       </StorieButton>

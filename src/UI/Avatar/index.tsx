@@ -5,13 +5,15 @@ import { AvatarWrapp, AvatarImg } from "./styled";
 type AvatarProps = {
   url?: string;
   fullname?: string;
-  textSize?: number | string;
+  $textSize?: number | string;
   size?: number;
   as?: any;
+  $noGradient?: boolean;
+  rest?: any;
 };
 
 const Avatar: React.FC<AvatarProps> = (props) => {
-  const { url, fullname, textSize } = props;
+  const { url, fullname, $textSize, ...rest } = props;
 
   const shortFormOfFullname = fullname
     ?.split(" ")
@@ -19,12 +21,12 @@ const Avatar: React.FC<AvatarProps> = (props) => {
     .join("");
 
   return (
-    <AvatarWrapp {...props}>
+    <AvatarWrapp {...rest}>
       <AvatarImg>
         <Text
           text={shortFormOfFullname}
-          bold
-          style={{ fontSize: textSize ? `${textSize}px` : 16 }}
+          $bold
+          style={{ fontSize: $textSize ? $textSize : 16 }}
         />
       </AvatarImg>
     </AvatarWrapp>

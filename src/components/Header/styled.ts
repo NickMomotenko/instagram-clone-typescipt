@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 
 import { Block, Row } from "../../UI/Layout";
-import Logo from "../Logo";
 
 export const HeaderWrapp = styled.header`
   background: #ffffff;
@@ -39,7 +38,7 @@ export const HeaderAllUser = styled(Block)`
   margin-top: 7px;
   z-index: 5;
 
-  visibility: ${(props) => (props.isActive ? "visible" : "hidden")};
+  visibility: ${({ $isActive }) => ($isActive ? "visible" : "hidden")};
 `;
 
 export const HeaderAllUserItem = styled(Row)`
@@ -59,7 +58,7 @@ export const HeaderLogoutButton = styled(Block)`
   }
 `;
 
-export const HeaderSearchBar = styled.div<{  $isSearchLabelActive?: boolean }>`
+export const HeaderSearchBar = styled.div<{ $isSearchLabelActive?: boolean }>`
   position: relative;
 
   @media screen and (max-width: 480px) {
@@ -81,8 +80,8 @@ export const HeaderSearchBar = styled.div<{  $isSearchLabelActive?: boolean }>`
       max-width: 100%;
     }
 
-    ${({  $isSearchLabelActive }) =>
-       $isSearchLabelActive &&
+    ${({ $isSearchLabelActive }) =>
+      $isSearchLabelActive &&
       css`
         top: 0;
       `}

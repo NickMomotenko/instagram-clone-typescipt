@@ -11,6 +11,8 @@ type TextProps = {
   color?: string;
   $center?: boolean;
   href?: string;
+  onClick?: () => void;
+  $textColor?: string;
 };
 
 const Text: React.FC<TextProps> = ({
@@ -18,11 +20,12 @@ const Text: React.FC<TextProps> = ({
   children,
   as,
   color,
+  $textColor,
   to,
   ...rest
 }) => {
   return (
-    <TextWrapp as={as} to={to} {...rest}>
+    <TextWrapp as={as} to={to} $textColor={$textColor} {...rest}>
       {children}
       {text}
     </TextWrapp>

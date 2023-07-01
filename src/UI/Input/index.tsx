@@ -11,6 +11,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   noError?: boolean;
   ref?: any;
   props?: any;
+  onChange?: () => void;
 };
 
 const Input: React.FC<InputProps> = React.forwardRef(
@@ -40,7 +41,7 @@ const Input: React.FC<InputProps> = React.forwardRef(
           ref={ref}
           value={value}
           type={type}
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
           onKeyDown={onKeyDown}
           style={{ borderBottomColor: error && `red` }}
           placeholder={placeholder}

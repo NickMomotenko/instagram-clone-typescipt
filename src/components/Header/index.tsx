@@ -38,6 +38,7 @@ import Icon from "../../UI/Icon";
 import closeIcon from "../../assets/icons/close.png";
 import { useWindowResize } from "../../hooks/useWindowResize";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { AppDispatch } from "../../redux/store";
 
 const Header = () => {
   const [searchUsers, setSearchUsers] = useState([]);
@@ -52,22 +53,22 @@ const Header = () => {
 
   const headerSearchPanelRef = React.useRef(null);
 
-  // const dispath = useDispatch();
+  const dispath = useDispatch<AppDispatch>();
 
   useClickOutside(headerSearchPanelRef, () => onCrossButtonClick(false));
 
-  // React.useEffect(() => {
-  //   searchInput?.value.length === 0
-  //     ? isSearchBlock.setIsActive(false)
-  //     : isSearchBlock.setIsActive(true);
+  React.useEffect(() => {
+    searchInput?.value.length === 0
+      ? isSearchBlock.setIsActive(false)
+      : isSearchBlock.setIsActive(true);
 
-  //   const userWithMatchedNameOrLastName = allDbUsers.filter(({ user }) => {
-  //     const lowerCaseFullname = user?.fullname?.toLowerCase();
-  //     return lowerCaseFullname.includes(searchInput?.value.toLowerCase());
-  //   });
+    const userWithMatchedNameOrLastName = allDbUsers.filter(({ user }) => {
+      const lowerCaseFullname = user?.fullname?.toLowerCase();
+      return lowerCaseFullname.includes(searchInput?.value.toLowerCase());
+    });
 
-  //   // setSearchUsers(userWithMatchedNameOrLastName);
-  // }, [searchInput?.value]);
+    setSearchUsers(userWithMatchedNameOrLastName);
+  }, [searchInput?.value]);
 
   React.useEffect(() => {
     isBurgerActive.isActive
@@ -80,10 +81,14 @@ const Header = () => {
     isSearchLabelActive.setIsActive(bool);
   }
 
+  const handleLogout = () => {
+    dispath({ type: LOGUT });
+  };
+
   return (
     <HeaderWrapp>
       <Container style={{ width: 1350 }}>
-        <Row center $btw>
+        <Row $center $btw>
           <Logo />
           <Navigation
             $isActive={isBurgerActive.isActive}
@@ -113,7 +118,7 @@ const Header = () => {
             {isSearchBlock.isActive && (
               <HeaderAllUser
                 as={searchUsers.length !== 0 ? "ul" : "div"}
-                isActive={isSearchBlock.isActive}
+                $isActive={isSearchBlock.isActive}
                 style={{
                   left: isMobileSize && 0,
                   right: isMobileSize && 0,
@@ -127,8 +132,8 @@ const Header = () => {
                       <HeaderAllUserItem key={id} as="li">
                         <Avatar
                           size={25}
-                          textSize={13}
-                          avatar={avatar}
+                          $textSize={13}
+                          url={avatar}
                           fullname={fullname}
                         />
                         <Block style={{ marginLeft: 11, marginTop: -5 }}>
@@ -144,18 +149,12 @@ const Header = () => {
               </HeaderAllUser>
             )}
           </HeaderSearchBar>
-          <Row center>
+          <Row $center>
             <HeaderSearchButton onClick={() => onCrossButtonClick(true)}>
               <Icon url={searchIcon} fill="black" />
             </HeaderSearchButton>
             <HeaderLogoutButton>
-              <LogoutButton
-                icon={logoutIcon}
-                // onClick={(e: any) => {
-                //   e.preventDefault();
-                //   dispath({ type: LOGUT });
-                // }}
-              />
+              <LogoutButton icon={logoutIcon} onClick={handleLogout} />
             </HeaderLogoutButton>
             <Burger
               $isActive={isBurgerActive.isActive}

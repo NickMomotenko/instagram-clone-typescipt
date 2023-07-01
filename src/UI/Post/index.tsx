@@ -17,7 +17,6 @@ import { useText } from "../../hooks/useText";
 import { useActive } from "../../hooks/useActive";
 
 import Avatar from "../Avatar";
-import AvatarMultiRow from "../AvatarMultiRow";
 import Text from "../Text";
 import Button from "../Button";
 import { Row, Block } from "../Layout";
@@ -35,29 +34,7 @@ import commentIcon from "../../assets/icons/3.svg";
 import likeIcon from "../../assets/icons/4.svg";
 
 import dots from "../../assets/icons/dots.svg";
-
-const postOptions = [
-  {
-    id: 1,
-    title: "Report",
-    onClick: () => {},
-  },
-  {
-    id: 2,
-    title: "Share to",
-    onClick: () => {},
-  },
-  {
-    id: 3,
-    title: "Copy link",
-    onClick: () => {},
-  },
-  {
-    id: 4,
-    title: "Cancel",
-    onClick: () => {},
-  },
-];
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 const POST_TYPES = {
   VIDEO: "video",
@@ -68,6 +45,7 @@ type PostProps = {
   authUser: any;
   isMyPost?: boolean;
   userId?: number | string;
+  as?: string | any;
 };
 
 const Post: React.FC<PostProps> = ({
@@ -78,7 +56,6 @@ const Post: React.FC<PostProps> = ({
   ...props
 }) => {
   const [like, setLike] = useState(false);
-  const [comment, setComment] = useState(false);
   const [share, setShare] = useState(false);
   const [save, setSave] = useState(false);
 
@@ -102,37 +79,15 @@ const Post: React.FC<PostProps> = ({
 
   const commentText = `View all comments (${comments?.length})`;
 
-  const postOptionsWithPersonalFunctions = [
-    ...postOptions,
-    { id: 5, title: "Delete", onClick: () => {} },
-  ];
-
   const user = post.user ? post.user : authUser.user;
 
-  React.useEffect(() => {
-    document.addEventListener("click", handleClickOutsidePost);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutsidePost);
-    };
-  }, []);
-
-  const handleClickOutsidePost = (e: any) => {
-    if (commentRef?.current?.contains(e.target)) {
-      return;
-    } else {
-      isCommentsBarActive.setIsActive(false);
-      isOptionsBarActive.setIsActive(false);
-    }
-  };
-
-  const likePost = (post: any) => {
+  const likePost = (id: number | string) => {
     if (!like) {
       setLike(true);
-      dispath({ type: LIKE_POST, id: post.id });
+      dispath({ type: LIKE_POST, id });
     } else {
       setLike(false);
-      dispath({ type: DISLIKE_POST, id: post.id });
+      dispath({ type: DISLIKE_POST, id });
     }
   };
 
@@ -151,13 +106,13 @@ const Post: React.FC<PostProps> = ({
         };
 
         dispath({ type: UPDATE_USER, updatedUserData });
-        dispath({ type: SAVE_POST });
+        // dispath({ type: SAVE_POST });
       }
     } else {
       setSave(false);
 
       const updatedUserSaved = authUser.saved.filter(
-        (savedPost) => savedPost.id !== post.id
+        (savedPost: any) => savedPost.id !== post.id
       );
 
       const updatedUserData = { ...authUser, saved: [...updatedUserSaved] };
@@ -165,6 +120,8 @@ const Post: React.FC<PostProps> = ({
       dispath({ type: UPDATE_USER, updatedUserData });
     }
   };
+
+  useClickOutside(commentRef, () => isCommentsBarActive.setIsActive(false));
 
   return (
     <PostWrapp ref={commentRef} {...props}>
@@ -189,14 +146,14 @@ const Post: React.FC<PostProps> = ({
       </PostRow>
       <PostRow>
         {post.postType === POST_TYPES.VIDEO && <Video url={videoUrl} />}
-        {isSlider ? <CustomSlider slides={photo} /> : <PostImage url={photo} />}
+        {isSlider ? <CustomSlider slides={photo} /> : <PostImage src={photo} />}
       </PostRow>
       <Block style={{ padding: "0 15px" }}>
         <PostRow>
           <PostButton
             icon={likeIcon}
             active={like}
-            onClick={() => likePost(post)}
+            onClick={() => likePost(post.id)}
           />
           <PostButton icon={commentIcon} onClick={commentPost} />
           <PostButton
@@ -212,8 +169,8 @@ const Post: React.FC<PostProps> = ({
           />
         </PostRow>
         {liked?.length !== 0 && (
-          <PostRow center btw>
-            <Row center style={{ marginRight: 10 }}>
+          <PostRow $center $btw>
+            <Row $center style={{ marginRight: 10 }}>
               <PostLikedText>
                 Liked by{" "}
                 <Text
@@ -223,13 +180,12 @@ const Post: React.FC<PostProps> = ({
                 />
               </PostLikedText>
             </Row>
-            <AvatarMultiRow data={liked} />
           </PostRow>
         )}
         <Block>
           <TextOpenOrClose
             text={text}
-            boolFlag={postText.isOpen}
+            $boolFlag={postText.isOpen}
             buttonText={postText.isOpen ? "(Close)" : "(More)"}
             buttonTextColor="#3737d8"
             buttonClick={() => postText.setIsOpen(!postText.isOpen)}
@@ -241,12 +197,9 @@ const Post: React.FC<PostProps> = ({
             href="#"
             text={commentText}
             color="#76777E"
-            bold
+            $bold
             style={{ fontSize: 12 }}
-            onClick={(e) => {
-              e.preventDefault();
-              isCommentsBarActive.setIsActive(true);
-            }}
+            onClick={() => isCommentsBarActive.setIsActive(true)}
           />
         </PostRow>
         <PostRow>
@@ -255,14 +208,14 @@ const Post: React.FC<PostProps> = ({
       </Block>
       <PostComments
         post={post}
-        $isCommentsBarActive={isCommentsBarActive}
+        isCommentsBarActive={isCommentsBarActive}
         userId={userId}
-        // onClick={() => isCommentsBarActive.setIsActive(false)}
+        onClick={() => isCommentsBarActive.setIsActive(false)}
       />
       <PostOptions
-        options={isMyPost ? postOptionsWithPersonalFunctions : postOptions}
+        isMyPost={isMyPost}
         active={isOptionsBarActive.isActive}
-        onClick={() => isOptionsBarActive.setIsActive(false)}
+        closeOptionBar={() => isOptionsBarActive.setIsActive(false)}
       />
     </PostWrapp>
   );

@@ -23,9 +23,9 @@ const AvatarMultiRow: React.FC<AvatarMultiRowProps> = ({ data = [] }) => {
             url={avatar}
             fullname={fullname}
             size={20}
-            textSize={9}
+            $textSize={9}
+            $noGradient
             index={index}
-            noGradient
           />
         );
       })}
