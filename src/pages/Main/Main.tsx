@@ -6,15 +6,12 @@ import { MainWrapp } from "./styled";
 
 import Container from "../../components/Container";
 import Header from "../../components/Header";
-import Popup from "../../components/Popup";
-
-import { Row } from "../../UI/Layout";
 
 type MainProps = {
-  popup?: any;
+
 };
 
-const Main: React.FC<MainProps> = ({ popup }) => {
+const Main: React.FC<MainProps> = () => {
   return (
     <MainWrapp>
       <Header />
@@ -23,7 +20,6 @@ const Main: React.FC<MainProps> = ({ popup }) => {
         <Outlet />
         {/* </Row> */}
       </Container>
-      {popup?.isActive && <Popup {...popup} />}
     </MainWrapp>
   );
 };

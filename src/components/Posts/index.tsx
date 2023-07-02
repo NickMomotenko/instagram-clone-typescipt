@@ -18,7 +18,7 @@ const Posts = () => {
     <PostsWrapp>
       <PostList style={{ marginBottom: -20 }}>
         {posts?.map((post: IPost) => {
-          const isMyPost = authUser.user.userId === post?.user.id;
+          const isMyPost = authUser.user.id === post?.user.id;
 
           return (
             <Post

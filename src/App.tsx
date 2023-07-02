@@ -58,9 +58,9 @@ export const App = () => {
           <Route path={authRoutes.create} element={<CreateNewAccount />} />
           <Route path={authRoutes.forgot} element={<ForgotPassword />} />
         </Route>
-        <Route path={baseRoutes.base} element={<Main popup={popup} />}>
+        <Route path={baseRoutes.base} element={<Main />}>
           <Route path="" element={<Posts />} />
-          <Route path={baseRoutes.profile} element={<Profile popup={popup} />}>
+          <Route path={baseRoutes.profile} element={<Profile />}>
             <Route path="edit" element={<Edit />}>
               <Route path="general" element={<EditGeneral />} />
               <Route path="posts" element={<EditPosts />} />

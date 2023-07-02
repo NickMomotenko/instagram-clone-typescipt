@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   ProfileWrapp,
@@ -21,33 +21,25 @@ import Avatar from "../../UI/Avatar";
 import Posts from "../Posts";
 import Edit from "../Edit";
 
-import { baseRoutes, profileEditRoutes } from "../../helpers/base-routes";
+import { profileEditRoutes } from "../../helpers/base-routes";
 import { RootState } from "../../redux/store";
+import Popup from "../Popup";
+import { useActive } from "../../hooks/useActive";
+import { CreatePost } from "../../containers/CreatePost";
 
-type ProfileProps = {
-  popup?: {
-    isActive: boolean;
-    setIsActive: () => void;
-  };
-};
+type ProfileProps = {};
 
-const Profile: React.FC<ProfileProps> = ({ popup }) => {
+const Profile: React.FC<ProfileProps> = () => {
   const {
     authUser: { user, stories, posts },
   } = useSelector((state: RootState) => state.authUser);
 
+  const createPostPopup = useActive();
+
   const navigate = useNavigate();
 
-  const renderPostsOrText = () => {
-    return posts?.length ? (
-      <Posts posts={posts} />
-    ) : (
-      <Text text="Nothing have not post yet ;(" $bold />
-    );
-  };
-
-  const createPost = () => {
-    popup?.setIsActive(true);
+  const handleOpenCreatePostPopup = () => {
+    createPostPopup?.setIsActive(true);
   };
 
   const onEditClick = () => {
@@ -101,11 +93,9 @@ const Profile: React.FC<ProfileProps> = ({ popup }) => {
               <Text text={user?.description} color="#76777e" />
             </Block>
             <Row style={{ justifyContent: "center" }}>
-              <GradientButton
-                text="Create post"
-                name="test"
-                onClick={createPost}
-              />
+              <GradientButton name="test" onClick={handleOpenCreatePostPopup}>
+                Create post
+              </GradientButton>
             </Row>
           </ProfileInfo>
           <ProfileStories>
@@ -142,6 +132,11 @@ const Profile: React.FC<ProfileProps> = ({ popup }) => {
         </ProfileContent>
       </ProfileHeader>
       <Edit />
+      {createPostPopup.isActive && (
+        <Popup isActive={createPostPopup.isActive}>
+          <CreatePost closePopup={() => createPostPopup.setIsActive(false)} />
+        </Popup>
+      )}
     </ProfileWrapp>
   );
 };

@@ -1,0 +1,105 @@
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import Avatar from "../../UI/Avatar";
+import DefaultButton from "../../UI/DefaultButton";
+import { Row, Block } from "../../UI/Layout";
+import Textarea from "../../UI/Textarea";
+import Text from "../../UI/Text";
+import { useInput } from "../../hooks/useInput";
+import { useClickOutside } from "../../hooks/useClickOutside";
+
+import { CREATE_POST } from "../../redux/posts/types";
+import { AppDispatch, RootState } from "../../redux/store";
+
+import { CreatePostWrapp } from "./styled";
+
+type CreatePostProps = {
+  closePopup?: () => any;
+};
+
+export const CreatePost: React.FC<CreatePostProps> = ({ closePopup }) => {
+  const {
+    authUser: { user },
+  } = useSelector((state: RootState) => state.authUser);
+
+  const postInput = useInput({
+    option: { symbolLimit: 255 },
+  });
+
+  const dispath = useDispatch<AppDispatch>();
+
+  const createPostRef = useRef<any>(null);
+
+  const handleCreatePost = () => {
+    dispath({ type: CREATE_POST, text: postInput?.value });
+    postInput.clearValue();
+  };
+
+  const handeCancel = () => {
+    postInput.clearValue();
+    postInput.refreshCurrentLimit();
+    closePopup();
+  };
+
+  const isCreateButtonDisabled = postInput?.value.length === 0;
+
+  useClickOutside(createPostRef, () => closePopup());
+
+  return (
+    <CreatePostWrapp ref={createPostRef}>
+      <Row style={{ paddingLeft: 5 }} $center>
+        <Block style={{ marginRight: 11 }}>
+          <Avatar url={user?.avatar} fullname={user?.fullname} size={40} />
+        </Block>
+        <Block>
+          <Text text={user?.fullname} $bold />
+        </Block>
+      </Row>
+      <Row style={{ marginTop: 20 }}>
+        <DefaultButton
+          text="Add photos"
+          $bgColor="transparent"
+          style={{ border: "1px solid #9d6b6b", color: "#9d6b6b" }}
+        />
+        <DefaultButton
+          text="Add videos"
+          $bgColor="transparent"
+          style={{
+            border: "1px solid #525ab7",
+            color: "#525ab7",
+            marginLeft: 15,
+          }}
+        />
+      </Row>
+      <Block style={{ marginTop: 20 }}>
+        <Block>
+          <Textarea
+            value={postInput.value}
+            onChange={postInput.onChange}
+            placeholder="Post text"
+            currentLimit={`${postInput.currentLimit}`}
+            maxLength={postInput.symbolLimit}
+            style={{ height: 150 }}
+          ></Textarea>
+        </Block>
+
+        <Row style={{ marginTop: 20 }}>
+          <DefaultButton
+            text="Create"
+            $fullWidth
+            disabled={isCreateButtonDisabled}
+            style={{ marginRight: 20 }}
+            onClick={handleCreatePost}
+          />
+          <DefaultButton
+            text="Cancel"
+            $fullWidth
+            $bgColor="#0095f6"
+            onClick={handeCancel}
+          />
+        </Row>
+      </Block>
+    </CreatePostWrapp>
+  );
+};
