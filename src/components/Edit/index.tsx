@@ -1,9 +1,14 @@
 import React from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import {
   EditWrapp,
-  EditContent,
   EditOptions,
   EditOptionsItem,
   EditMain,
@@ -16,10 +21,10 @@ import { baseRoutes, profileEditRoutes } from "../../helpers/base-routes";
 
 import Text from "../../UI/Text";
 import DefaultButton from "../../UI/DefaultButton";
-import Icon from "../../UI/Icon";
 import { Row } from "../../UI/Layout";
 
 import closeIcon from "../../assets/icons/close.png";
+import Popup from "../Popup";
 
 const editOptions = [
   {
@@ -37,7 +42,7 @@ const editOptions = [
 const Edit = () => {
   const [isEditActive, setIsEditActive] = React.useState(false);
 
-  const editContentRef = React.useRef(null);
+  const popupContentRef = React.useRef<any>(null);
 
   const pathName = useLocation().pathname;
   const navigate = useNavigate();
@@ -61,14 +66,12 @@ const Edit = () => {
   }, [pathName]);
 
   React.useEffect(() => {
-    const wrapperBlock = editContentRef.current;
-
     if (
-      pathName === "/profile/edit/general" ||
-      pathName === "/profile/edit/posts"
+      pathName === profileEditRoutes.general ||
+      pathName === profileEditRoutes.posts
     ) {
-      wrapperBlock.style.maxWidth = "767px";
-      wrapperBlock.style.width = "100%";
+      popupContentRef.current.style.maxWidth = "767px";
+      popupContentRef.current.style.width = "100%";
     }
   }, [pathName]);
 
@@ -77,16 +80,8 @@ const Edit = () => {
   };
 
   return (
-    <EditWrapp $active={isEditActive}>
-      <EditContent
-        ref={editContentRef}
-        style={{
-          overflowY: "auto",
-          paddingTop: 0,
-          paddingBottom: 0,
-          maxHeight: "100%",
-        }}
-      >
+    <EditWrapp>
+      <Popup isActive={isEditActive} contentRef={popupContentRef}>
         <EditHeader>
           <Row $btw $center style={{ marginBottom: 20 }}>
             <Text text="Edit profile" $bold style={{ fontSize: 18 }} />
@@ -94,21 +89,25 @@ const Edit = () => {
               <EditExitIcon src={closeIcon} />
             </EditExitButton>
           </Row>
-
           <EditOptions as="ul">
             {editOptions.map(({ title, path, id }) => (
               <EditOptionsItem key={id} as="li">
-                <DefaultButton
-                  text={title}
-                  as={Link}
+                <NavLink
                   to={path}
-                  style={{
-                    background: "transparent",
-                    color: "#7751518a",
-                    borderColor: "#7751518a",
-                    border: "1px solid",
+                  style={({ isActive }) => {
+                    return {
+                      display: "inline-block",
+                      background: "transparent",
+                      color: isActive ? "black" : "#7751518a",
+                      borderColor: isActive ? "black" : "#7751518a",
+                      border: "1px solid",
+                      padding: "7px 27px",
+                      borderRadius: 5,
+                    };
                   }}
-                />
+                >
+                  {title}
+                </NavLink>
               </EditOptionsItem>
             ))}
           </EditOptions>
@@ -116,7 +115,7 @@ const Edit = () => {
         <EditMain>
           <Outlet />
         </EditMain>
-      </EditContent>
+      </Popup>
     </EditWrapp>
   );
 };

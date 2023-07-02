@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { Row, Block } from "../../UI/Layout";
 import { PopupContent, PopupWrapp } from "../Popup/styles";
-
-export const EditWrapp = styled(PopupWrapp)``;
+// (PopupWrapp)
+export const EditWrapp = styled.div``;
 
 export const EditGeneralWrapp = styled.div``;
 

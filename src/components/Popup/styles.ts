@@ -31,9 +31,11 @@ export const PopupWrapp = styled.div<{ $active?: boolean }>`
 `;
 
 export const PopupContent = styled(Paper)`
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   position: relative;
 
   box-shadow: 0 0 5px #fff;
   padding: 25px;
+  margin: 25px;
 `;
