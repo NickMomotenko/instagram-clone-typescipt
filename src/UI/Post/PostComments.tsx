@@ -7,6 +7,8 @@ import {
   PostRow,
   PostCommentsContent,
   PostCommentsBottom,
+  PostDeleteBtn,
+  PostChangeBtn,
 } from "./PostCommentsStyles";
 
 import { useInput } from "../../hooks/useInput";
@@ -25,6 +27,10 @@ import {
 } from "../../redux/posts/types";
 import { IPostComment } from "../../redux/types";
 import Button from "../Button";
+
+import changeIcon from "../../assets/icons/change.svg";
+import deleteIcon from "../../assets/icons/delete.svg";
+import Icon from "../Icon";
 
 type PostCommentsProps = {
   post?: any;
@@ -116,6 +122,12 @@ const PostComments: React.FC<PostCommentsProps> = ({
         commentId: id,
       },
     });
+
+    if (currentComment || isChangeComment) {
+      setCurrentComment(null);
+      setIsChangeComment(false);
+      commentInput.clearValue();
+    }
   };
 
   const addButtonClickFunction = !isChangeComment ? addComment : changeComment2;
@@ -156,18 +168,22 @@ const PostComments: React.FC<PostCommentsProps> = ({
                       href="/post"
                     />
                     {isMyComment && (
-                      <Block style={{ marginLeft: "auto" }}>
+                      <Row $center style={{ marginLeft: "auto" }}>
+                        <Button view="ghost" onClick={() => changeComment(id)}>
+                          <PostChangeBtn>
+                            <Icon url={changeIcon} />
+                          </PostChangeBtn>
+                        </Button>
                         <Button
-                          text="change"
-                          view="ghost"
-                          onClick={() => changeComment(id)}
-                        />
-                        <Button
-                          text="delete"
                           view="ghost"
                           onClick={() => deleteComment(id)}
-                        />
-                      </Block>
+                          fill="#fff"
+                        >
+                          <PostDeleteBtn>
+                            <Icon url={deleteIcon} />
+                          </PostDeleteBtn>
+                        </Button>
+                      </Row>
                     )}
                   </Row>
                   <Text text={text} $textColor="#fff" />

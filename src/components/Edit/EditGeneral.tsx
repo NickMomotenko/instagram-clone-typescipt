@@ -24,9 +24,10 @@ import { baseRoutes } from "../../helpers/base-routes";
 import { InputLabel } from "../../UI/Input/styled";
 
 import { UPDATE_USER } from "../../redux/user/types";
+import { RootState } from "../../redux/store";
 
 const EditGeneral = () => {
-  const { authUser } = useSelector((state) => state.authUser);
+  const { authUser } = useSelector((state: RootState) => state.authUser);
   const { user } = authUser;
 
   const fullname = useInput({
@@ -157,7 +158,7 @@ const EditGeneral = () => {
                 onMoreButtonClick();
               }}
               text={moreButtonText}
-              bgcolor="#f8fbff"
+              $bgColor="#f8fbff"
               style={{ color: "#6d747e", border: "1px solid #6d747e" }}
             />
           </EditMore>

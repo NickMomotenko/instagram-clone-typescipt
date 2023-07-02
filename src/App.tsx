@@ -12,7 +12,6 @@ import CreateNewAccount from "./components/LoginForm/CreateNewAccount";
 import ForgotPassword from "./components/LoginForm/ForgotPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
-import React from "react";
 import { SET_PRELOADER_STATUS } from "./redux/app/types";
 
 import Posts from "./components/Posts";
@@ -20,6 +19,13 @@ import Posts from "./components/Posts";
 import Main from "./pages/Main/Main";
 
 import { useActive } from "./hooks/useActive";
+import Edit from "./components/Edit";
+import Profile from "./components/Profile";
+import EditGeneral from "./components/Edit/EditGeneral";
+import EditPosts from "./components/Edit/EditPosts";
+import { useEffect } from "react";
+
+import React from "react";
 
 export const App = () => {
   const { isPreloaderActive } = useSelector((state: RootState) => state.app);
@@ -30,13 +36,12 @@ export const App = () => {
   // delay timer in sec
   const delayTimer = 3;
 
-  // React.useEffect(() => {
-  //   dispatch({ type: SET_PRELOADER_STATUS, payload: false });
-
-  //   setTimeout(() => {
-  //     dispatch({ type: SET_PRELOADER_STATUS, payload: true });
-  //   }, delayTimer * 1000);
-  // }, []);
+  React.useEffect(() => {
+    // dispatch({ type: SET_PRELOADER_STATUS, payload: false });
+    // setTimeout(() => {
+    //   dispatch({ type:  SET_PRELOADER_STATUS, payload: true });
+    // }, delayTimer * 1000);
+  }, []);
 
   return (
     <AppWrapp>
@@ -55,12 +60,12 @@ export const App = () => {
         </Route>
         <Route path={baseRoutes.base} element={<Main popup={popup} />}>
           <Route path="" element={<Posts />} />
-          {/* <Route path={baseRoutes.profile} element={<Profile popup={popup} />}>
+          <Route path={baseRoutes.profile} element={<Profile popup={popup} />}>
             <Route path="edit" element={<Edit />}>
               <Route path="general" element={<EditGeneral />} />
               <Route path="posts" element={<EditPosts />} />
             </Route>
-          </Route> */}
+          </Route>
         </Route>
         <Route path="*" element={<Navigate to={baseRoutes.login} replace />} />
       </Routes>

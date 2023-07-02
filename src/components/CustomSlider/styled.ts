@@ -9,6 +9,8 @@ export const CustomSliderItem = styled.div`
   min-width: 100%;
   border-radius: 15px;
   height: 180px;
+
+  background-size: cover !important;
 `;
 
 const btnSize = 6;

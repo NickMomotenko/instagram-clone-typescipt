@@ -60,8 +60,6 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
     <CustomSliderWrapp ref={wrappRef} {...handlers}>
       <Row ref={listRef} style={{ transition: "transform .4s" }}>
         {slides?.map((slide: string, index: number) => {
-          console.log(slide);
-
           return (
             <CustomSliderItem
               key={index}

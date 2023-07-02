@@ -14,6 +14,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   mute?: boolean;
   view?: BView;
   fill?: string;
+  children?: React.ReactNode;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,11 +22,12 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   active,
   fill,
+  children,
   ...rest
 }) => {
   return (
     <ButtonWrapp {...rest}>
-      {text && text}
+      {children}
       {icon && <Icon url={icon} fill={active ? "red" : "#D7E0EB"} />}
     </ButtonWrapp>
   );

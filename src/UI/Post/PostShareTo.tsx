@@ -2,21 +2,18 @@ import {
   PostShareToWrapp,
   PostShareToList,
   PostShareToItem,
+  PostShareIcon,
 } from "./PostStyles";
 
 import { ShareItem } from "./types";
 
-import tgIcon from "../../assets/icons/tg.svg";
 import instaIcon from "../../assets/icons/insta.svg";
 import twitterIcon from "../../assets/icons/twitter.svg";
 import Button from "../Button";
+import Icon from "../Icon";
+import Text from "../Text";
 
 const shareList: ShareItem[] = [
-  {
-    title: "Telegram",
-    icon: tgIcon,
-    link: "",
-  },
   {
     title: "Instagram",
     icon: instaIcon,
@@ -32,11 +29,21 @@ const shareList: ShareItem[] = [
 export const PostShareTo: React.FC = () => {
   return (
     <PostShareToWrapp>
+      <Text
+        text="Share to socials"
+        $bold
+        $textColor="#fff"
+        style={{ fontSize: 20, marginBottom: 15 }}
+      />
       <PostShareToList>
-        {shareList?.map(({ icon }: ShareItem, index: number) => {
+        {shareList?.map(({ icon, title }: ShareItem, index: number) => {
           return (
             <PostShareToItem key={index}>
-              <Button view="ghost" icon={icon} />
+              <Button view="ghost">
+                <PostShareIcon title={title.toLowerCase()}>
+                  <Icon url={icon} />
+                </PostShareIcon>
+              </Button>
             </PostShareToItem>
           );
         })}

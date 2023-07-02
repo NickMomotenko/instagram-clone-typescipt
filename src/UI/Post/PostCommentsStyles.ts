@@ -37,3 +37,23 @@ export const PostCommentsContent = styled.div`
 `;
 
 export const PostCommentsBottom = styled.div``;
+
+export const PostDeleteBtn = styled.div`
+  margin-left: 7px;
+
+  svg {
+    height: 13px;
+  }
+`;
+
+export const PostChangeBtn = styled.div`
+  svg * {
+    fill: #d7e0eb;
+  }
+
+  &:hover{
+    * {
+      fill:red;
+    }
+  }
+`;

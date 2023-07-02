@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Button from "../Button";
 import { Row } from "../Layout";
@@ -50,11 +50,14 @@ export const PostLikedText = styled.div`
   font-weight: 400;
 `;
 
-export const PostShareToWrapp = styled.div``;
+export const PostShareToWrapp = styled.div`
+  text-align: center;
+`;
 
 export const PostShareToList = styled.ul`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 export const PostShareToItem = styled.li`
@@ -80,4 +83,27 @@ export const PostReportWrapp = styled.div``;
 
 export const PostReportTextarea = styled.div`
   margin-bottom: 15px;
+`;
+
+export const PostShareIcon = styled.div<{ title: string }>`
+  height: 25px;
+  width: 25px;
+
+  svg {
+    ${({ title }) =>
+      title === "instagram" &&
+      css`
+        fill: transparent;
+
+        path {
+          stroke: #d7e0eb;
+        }
+      `}
+
+    ${({ title }) =>
+      title === "twitter" &&
+      css`
+        width: 25px;
+      `}
+  }
 `;

@@ -76,7 +76,7 @@ const PostOptions: React.FC<PostOptionsProps> = ({
 
   const optionsList = isMyPost ? postOptionsWithPersonalFunctions : postOptions;
 
-  useClickOutside(postOptionsRef, () => {});
+  useClickOutside(postOptionsRef, () => closeOptionBar());
 
   return (
     <PostOptionsWrapp $active={active} ref={postOptionsRef}>

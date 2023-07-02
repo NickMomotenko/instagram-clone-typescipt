@@ -1,5 +1,6 @@
-import React from "react";
 import { useSelector } from "react-redux";
+
+import { RootState } from "../../redux/store";
 
 import styled from "styled-components";
 
@@ -8,7 +9,7 @@ import Post from "../../UI/Post";
 const EditPostsWrapp = styled.div`
   column-count: 2;
 
-  @media screen and (max-width:670px){
+  @media screen and (max-width: 670px) {
     column-count: 1;
   }
 `;
@@ -16,7 +17,7 @@ const EditPostsWrapp = styled.div`
 const EditPostItem = styled.div``;
 
 const EditPosts = () => {
-  const { authUser } = useSelector((state) => state.authUser);
+  const { authUser } = useSelector((state: RootState) => state.authUser);
 
   const { posts: authUserPosts } = authUser;
 

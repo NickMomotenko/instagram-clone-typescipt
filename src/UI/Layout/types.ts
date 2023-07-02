@@ -20,4 +20,9 @@ export type BlockProps = {
   $isActive?: boolean;
 };
 
-export type PaperProps = { props?: any; children?: React.ReactNode; ref?: any };
+export type PaperProps = {
+  props?: any;
+  children?: React.ReactNode;
+  ref?: any;
+  style?: any;
+};

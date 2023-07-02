@@ -8,9 +8,8 @@ import {
   EditOptionsItem,
   EditMain,
   EditHeader,
-  EditOptionsButton,
-  EditExitIcon,
   EditExitButton,
+  EditExitIcon,
 } from "./styled";
 
 import { baseRoutes, profileEditRoutes } from "../../helpers/base-routes";
@@ -78,7 +77,7 @@ const Edit = () => {
   };
 
   return (
-    <EditWrapp active={isEditActive}>
+    <EditWrapp $active={isEditActive}>
       <EditContent
         ref={editContentRef}
         style={{
@@ -89,7 +88,7 @@ const Edit = () => {
         }}
       >
         <EditHeader>
-          <Row btw center style={{ marginBottom: 20 }}>
+          <Row $btw $center style={{ marginBottom: 20 }}>
             <Text text="Edit profile" $bold style={{ fontSize: 18 }} />
             <EditExitButton onClick={onCancelButton}>
               <EditExitIcon src={closeIcon} />

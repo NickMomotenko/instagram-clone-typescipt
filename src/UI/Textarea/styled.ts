@@ -19,6 +19,10 @@ export const TextareaWrapp = styled.textarea<{ transparent?: boolean }>`
   font-size: 15px;
   color: #afc1d9;
 
+  &:focus {
+    border-color: red;
+  }
+
   &::placeholder {
     font-size: 15px;
     line-height: 20px;
