@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Avatar from "../../UI/Avatar";
@@ -12,7 +12,18 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import { CREATE_POST } from "../../redux/posts/types";
 import { AppDispatch, RootState } from "../../redux/store";
 
-import { CreatePostWrapp } from "./styled";
+import {
+  CreatePostImagePreview,
+  CreatePostWrapp,
+  CreatePostImage,
+  CreatePostDropInput,
+  CreatePostDropLabel,
+  CreatePostImageCrossBtn,
+} from "./styled";
+import Icon from "../../UI/Icon";
+
+import crossIcon from "../../assets/icons/cross.svg";
+import crossIcon2 from "../../assets/icons/delete.svg";
 
 type CreatePostProps = {
   closePopup?: () => any;
@@ -23,9 +34,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({ closePopup }) => {
     authUser: { user },
   } = useSelector((state: RootState) => state.authUser);
 
+  const [selectedImage, setSelectedImage] = useState<string[] | null>([]);
+
   const postInput = useInput({
     option: { symbolLimit: 255 },
   });
+
+  useEffect(() => console.log(selectedImage), []);
 
   const dispath = useDispatch<AppDispatch>();
 
@@ -40,6 +55,16 @@ export const CreatePost: React.FC<CreatePostProps> = ({ closePopup }) => {
     postInput.clearValue();
     postInput.refreshCurrentLimit();
     closePopup();
+  };
+
+  const handleUplodImage = (event: any) => {
+    setSelectedImage((prev: any) => [...prev, ...event.target.files]);
+  };
+
+  const handleDeleteUploadedImage = (index: number) => {
+    setSelectedImage((prev: any) => [
+      ...prev?.filter((_, ind) => ind !== index),
+    ]);
   };
 
   const isCreateButtonDisabled = postInput?.value.length === 0;
@@ -57,20 +82,37 @@ export const CreatePost: React.FC<CreatePostProps> = ({ closePopup }) => {
         </Block>
       </Row>
       <Row style={{ marginTop: 20 }}>
-        <DefaultButton
-          text="Add photos"
-          $bgColor="transparent"
-          style={{ border: "1px solid #9d6b6b", color: "#9d6b6b" }}
-        />
-        <DefaultButton
-          text="Add videos"
-          $bgColor="transparent"
-          style={{
-            border: "1px solid #525ab7",
-            color: "#525ab7",
-            marginLeft: 15,
-          }}
-        />
+        <CreatePostDropLabel htmlFor="audio">
+          Add photos
+          <CreatePostDropInput
+            type="file"
+            id="audio"
+            onChange={handleUplodImage}
+            multiple
+          />
+        </CreatePostDropLabel>
+        <CreatePostDropLabel htmlFor="video">
+          Add videos
+          <CreatePostDropInput
+            type="file"
+            id="video"
+            onChange={() => {}}
+            multiple
+          />
+        </CreatePostDropLabel>
+      </Row>
+      <Row $center style={{ marginTop: 20 }}>
+        {selectedImage &&
+          selectedImage.map((image: string, index) => (
+            <CreatePostImagePreview key={index}>
+              <CreatePostImageCrossBtn
+                onClick={() => handleDeleteUploadedImage(index)}
+              >
+                <Icon url={crossIcon2} />
+              </CreatePostImageCrossBtn>
+              <CreatePostImage src={URL.createObjectURL(image)} />
+            </CreatePostImagePreview>
+          ))}
       </Row>
       <Block style={{ marginTop: 20 }}>
         <Block>
@@ -83,7 +125,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ closePopup }) => {
             style={{ height: 150 }}
           ></Textarea>
         </Block>
-
         <Row style={{ marginTop: 20 }}>
           <DefaultButton
             text="Create"
