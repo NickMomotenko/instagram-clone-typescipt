@@ -22,7 +22,7 @@ export const Block: React.FC<BlockProps> = ({ children, ...rest }) => {
 };
 
 export const Paper: React.FC<PaperProps> = React.forwardRef(
-  ({ children, ...props }, ref) => {
+  ({ children, ...props }, ref :any) => {
     return (
       <PaperWrapp ref={ref} {...props}>
         {children}

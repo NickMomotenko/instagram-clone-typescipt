@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ColumnProps = {
   children?: React.ReactNode;
   props?: any;
@@ -10,6 +12,7 @@ export type RowProps = {
   $center?: boolean;
   $btw?: boolean;
   style?: any;
+  $as?: any;
 };
 
 export type BlockProps = {

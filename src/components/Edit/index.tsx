@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Link,
   NavLink,
   Outlet,
   useLocation,
@@ -17,11 +16,10 @@ import {
   EditExitIcon,
 } from "./styled";
 
-import { baseRoutes, profileEditRoutes } from "../../helpers/base-routes";
+import {baseRoutes, profileEditRoutes} from "../../helpers/base-routes";
 
 import Text from "../../UI/Text";
-import DefaultButton from "../../UI/DefaultButton";
-import { Row } from "../../UI/Layout";
+import {Row} from "../../UI/Layout";
 
 import closeIcon from "../../assets/icons/close.png";
 import Popup from "../Popup";
@@ -70,8 +68,10 @@ const Edit = () => {
       pathName === profileEditRoutes.general ||
       pathName === profileEditRoutes.posts
     ) {
-      popupContentRef.current.style.maxWidth = "767px";
-      popupContentRef.current.style.width = "100%";
+      setTimeout(() => {
+        popupContentRef.current.style.maxWidth = "767px";
+        popupContentRef.current.style.width = "100%";
+      }, 0)
     }
   }, [pathName]);
 
@@ -81,41 +81,43 @@ const Edit = () => {
 
   return (
     <EditWrapp>
-      <Popup isActive={isEditActive} contentRef={popupContentRef}>
-        <EditHeader>
-          <Row $btw $center style={{ marginBottom: 20 }}>
-            <Text text="Edit profile" $bold style={{ fontSize: 18 }} />
-            <EditExitButton onClick={onCancelButton}>
-              <EditExitIcon src={closeIcon} />
-            </EditExitButton>
-          </Row>
-          <EditOptions as="ul">
-            {editOptions.map(({ title, path, id }) => (
-              <EditOptionsItem key={id} as="li">
-                <NavLink
-                  to={path}
-                  style={({ isActive }) => {
-                    return {
-                      display: "inline-block",
-                      background: "transparent",
-                      color: isActive ? "black" : "#7751518a",
-                      borderColor: isActive ? "black" : "#7751518a",
-                      border: "1px solid",
-                      padding: "7px 27px",
-                      borderRadius: 5,
-                    };
-                  }}
-                >
-                  {title}
-                </NavLink>
-              </EditOptionsItem>
-            ))}
-          </EditOptions>
-        </EditHeader>
-        <EditMain>
-          <Outlet />
-        </EditMain>
-      </Popup>
+      {
+        isEditActive && <Popup ref={popupContentRef}>
+              <EditHeader>
+                  <Row $btw $center style={{marginBottom: 20}}>
+                      <Text text="Edit profile" $bold style={{fontSize: 18}}/>
+                      <EditExitButton onClick={onCancelButton}>
+                          <EditExitIcon src={closeIcon}/>
+                      </EditExitButton>
+                  </Row>
+                  <EditOptions as="ul">
+                    {editOptions.map(({title, path, id}) => (
+                      <EditOptionsItem key={id} as="li">
+                        <NavLink
+                          to={path}
+                          style={({isActive}) => {
+                            return {
+                              display: "inline-block",
+                              background: "transparent",
+                              color: isActive ? "black" : "#7751518a",
+                              borderColor: isActive ? "black" : "#7751518a",
+                              border: "1px solid",
+                              padding: "7px 27px",
+                              borderRadius: 5,
+                            };
+                          }}
+                        >
+                          {title}
+                        </NavLink>
+                      </EditOptionsItem>
+                    ))}
+                  </EditOptions>
+              </EditHeader>
+              <EditMain>
+                  <Outlet/>
+              </EditMain>
+          </Popup>
+      }
     </EditWrapp>
   );
 };

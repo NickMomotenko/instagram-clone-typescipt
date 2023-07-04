@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Paper } from "../../UI/Layout";
 
-export const PopupWrapp = styled.div<{ $active?: boolean }>`
+export const PopupWrapp = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -9,8 +9,7 @@ export const PopupWrapp = styled.div<{ $active?: boolean }>`
   width: 100%;
 
   z-index: 15;
-
-  visibility: ${({ $active }) => ($active ? "visible" : "hidden")};
+  
 
   display: flex;
   align-items: center;

@@ -76,12 +76,12 @@ export const postsReducer = (state = initialState, action: any) => {
     }
 
     case CREATE_POST: {
-      const { text } = action;
+      const { text , data } = action.payload;
 
       const basePostExample = {
         id: Date.now().toString(),
         postType: "text",
-        photo: [],
+        photo: data,
         comments: [],
         liked: [],
       };
