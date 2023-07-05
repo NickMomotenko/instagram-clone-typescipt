@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 
 import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 
 import {
   ProfileWrapp,
@@ -11,6 +11,7 @@ import {
   ProfileContent,
   ProfileInfo,
   ProfileStories,
+  ProfileOutlet, ProfileUserPosts
 } from "./styled";
 
 import {Row, Block} from "../../UI/Layout";
@@ -18,30 +19,49 @@ import Text from "../../UI/Text";
 import DefaultButton from "../../UI/DefaultButton";
 import Avatar from "../../UI/Avatar";
 
-import Edit from "../Edit";
 
 import {profileEditRoutes} from "../../helpers/base-routes";
 import {RootState} from "../../redux/store";
 import Popup from "../Popup";
 import {useActive} from "../../hooks/useActive";
 import CreatePost from "../../containers/CreatePost";
+import Posts from "../Posts";
+import {useWindowResize} from "../../hooks/useWindowResize";
 
 type ProfileProps = {};
 
 const Profile: React.FC<ProfileProps> = () => {
   const {
-    authUser: {user, stories},
+    authUser: {user, stories, posts},
   } = useSelector((state: RootState) => state.authUser);
 
-  const createPostPopup: {
+  const postPopup: {
     isActive: boolean,
     setIsActive: React.Dispatch<React.SetStateAction<boolean>>
   } = useActive();
 
   const navigate = useNavigate();
 
+  const profilePostsRef = useRef<any>(null)
+
+  const windowWidth = useWindowResize()
+
+  useEffect(() => {
+    if (windowWidth > 670) {
+      if (profilePostsRef.current) {
+        profilePostsRef.current.style = ``;
+      }
+    }
+
+    if (windowWidth <= 670) {
+      if (profilePostsRef.current) {
+        profilePostsRef.current.style = `grid-template-columns: repeat(1 , 1fr) ;`;
+      }
+    }
+  } , [windowWidth])
+
   const handleOpenCreatePostPopup = () => {
-    createPostPopup?.setIsActive(true);
+    postPopup?.setIsActive(true);
   };
 
   const onEditClick = () => {
@@ -133,10 +153,15 @@ const Profile: React.FC<ProfileProps> = () => {
           </ProfileStories>
         </ProfileContent>
       </ProfileHeader>
-      <Edit/>
-      {createPostPopup.isActive && (
+      <ProfileUserPosts>
+        <Posts posts={posts} $baseColumnCounter={2} contentRef={profilePostsRef}/>
+      </ProfileUserPosts>
+      <ProfileOutlet>
+        <Outlet/>
+      </ProfileOutlet>
+      {postPopup.isActive && (
         <Popup>
-          <CreatePost closePopup={() => createPostPopup.setIsActive(false)}/>
+          <CreatePost closePopup={() => postPopup.setIsActive(false)}/>
         </Popup>
       )}
     </ProfileWrapp>

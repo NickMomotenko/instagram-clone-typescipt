@@ -9,8 +9,6 @@ export const PostWrapp = styled.div`
   box-shadow: 0px 0px 10px rgb(222 230 237 / 40%);
   border-radius: 30px;
   padding: 15px 5px;
-  /* max-width: 300px; */
-  width: 100%;
 
   display: inline-block;
   vertical-align: top;
@@ -19,6 +17,7 @@ export const PostWrapp = styled.div`
 
   position: relative;
   overflow: hidden;
+  
 `;
 
 export const PostImage = styled.img`

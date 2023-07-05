@@ -14,6 +14,7 @@ export const authRoutes = {
 };
 
 export const profileEditRoutes = {
+  edit: `${baseRoutes.profile}${baseRoutes.edit}`,
   general: `${baseRoutes.profile}${baseRoutes.edit}/general`,
   posts: `${baseRoutes.profile}${baseRoutes.edit}/posts`,
   saved: `${baseRoutes.profile}${baseRoutes.edit}/saved`,

@@ -60,6 +60,7 @@ const CreatePost: React.FC<CreatePostProps> = ({closePopup}) => {
   const handleCancel = () => {
     postInput.clearValue();
     postInput.refreshCurrentLimit();
+    setSelectedImage([])
     closePopup();
   };
 
@@ -97,7 +98,7 @@ const CreatePost: React.FC<CreatePostProps> = ({closePopup}) => {
             multiple
           />
         </CreatePostDropLabel>
-        <CreatePostDropLabel htmlFor="video">
+        <CreatePostDropLabel htmlFor="video" disabled>
           Add videos
           <CreatePostDropInput
             type="file"
@@ -105,22 +106,26 @@ const CreatePost: React.FC<CreatePostProps> = ({closePopup}) => {
             onChange={() => {
             }}
             multiple
+            disabled
           />
         </CreatePostDropLabel>
       </Row>
-      <Row $center style={{marginTop: 20}}>
-        {selectedImage &&
-          selectedImage.map((image: any, index: number) => (
-            <CreatePostImagePreview key={index}>
-              <CreatePostImageCrossBtn
-                onClick={() => handleDeleteUploadedImage(index)}
-              >
-                <Icon url={crossIcon2}/>
-              </CreatePostImageCrossBtn>
-              <CreatePostImage src={URL.createObjectURL(image)}/>
-            </CreatePostImagePreview>
-          ))}
-      </Row>
+
+      {selectedImage?.length >= 1 &&
+          <Row $center style={{marginTop: 20}}>
+            {selectedImage?.map((image: any, index: number) => (
+              <CreatePostImagePreview key={index}>
+                <CreatePostImageCrossBtn
+                  onClick={() => handleDeleteUploadedImage(index)}
+                >
+                  <Icon url={crossIcon2}/>
+                </CreatePostImageCrossBtn>
+                <CreatePostImage src={URL.createObjectURL(image)}/>
+              </CreatePostImagePreview>
+            ))}
+          </Row>
+      }
+
       <Block style={{marginTop: 20}}>
         <Block>
           <Textarea

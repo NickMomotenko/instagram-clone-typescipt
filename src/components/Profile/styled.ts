@@ -90,3 +90,19 @@ export const ButtonWithLink = styled(Link)``;
 export const StorieButton = styled(Link)`
   display: block;
 `;
+
+
+export const ProfileOutlet = styled.div``;
+export const ProfileUserPosts = styled.div`
+  padding: 30px 0;
+  margin: 0 auto;
+  width: 60%;
+
+  @media screen and (max-width: 1000px) {
+    width: 80%;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 95%;
+  }
+`;

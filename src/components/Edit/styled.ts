@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Row, Block } from "../../UI/Layout";
-import { PopupContent } from "../Popup/styles";
+import {Row, Block} from "../../UI/Layout";
+import {PopupContent} from "../Popup/styles";
 // (PopupWrapp)
 export const EditWrapp = styled.div``;
 
@@ -62,14 +62,7 @@ export const EditGeneralButtons = styled.div`
   }
 `;
 
-export const EditContent = styled(PopupContent)`
-  @media screen and (max-width: 768px) {
-    margin: 0 3%;
-  }
-
-  @media screen and (max-width: 480px) {
-    padding: 10px;
-  }
+export const EditContent = styled.div`
 `;
 
 export const EditOptions = styled.div`
@@ -110,3 +103,5 @@ export const EditExitIcon = styled.img`
   height: 15px;
   width: 15px;
 `;
+
+
