@@ -105,7 +105,6 @@ export const App = () => {
           <Route path={baseRoutes.profile} element={<Profile/>}>
             <Route path="edit" element={<Edit/>}>
               <Route path="general" element={<EditGeneral/>}/>
-              <Route path="posts" element={<EditPosts/>}/>
             </Route>
           </Route>
         </Route>

@@ -13,7 +13,7 @@ import {
   EditMain,
   EditHeader,
   EditExitButton,
-  EditExitIcon, EditContent,
+  EditExitIcon, EditContent, EditPopup,
 } from "./styled";
 
 import Text from "../../UI/Text";
@@ -32,11 +32,6 @@ const editOptions = [
     id: 1,
     title: "General",
     path: `${profileEditRoutes.general}`,
-  },
-  {
-    id: 2,
-    title: "My posts",
-    path: `${profileEditRoutes.posts}`,
   },
 ];
 
@@ -61,7 +56,6 @@ const Edit: React.FC<EditProps> = () => {
     const pathArr = [
       profileEditRoutes.edit,
       profileEditRoutes.general,
-      profileEditRoutes.posts
     ];
 
     if (pathArr.includes(pathName)) {
@@ -71,15 +65,18 @@ const Edit: React.FC<EditProps> = () => {
 
   React.useEffect(() => {
     if (
-      pathName === profileEditRoutes.general ||
-      pathName === profileEditRoutes.posts
+      pathName === profileEditRoutes.general
     ) {
       setTimeout(() => {
-        popupContentRef.current.style.maxWidth = "767px";
-        popupContentRef.current.style.width = "100%";
+        popupContentRef.current.style = `
+          max-width:767px;
+          width:100%;
+          padding-top:0;
+        `
       }, 0)
     }
   }, [pathName]);
+
 
   const onCancelButton = () => {
     navigate(baseRoutes.profile);
@@ -99,28 +96,6 @@ const Edit: React.FC<EditProps> = () => {
                               <EditExitIcon src={closeIcon}/>
                           </EditExitButton>
                       </Row>
-                      <EditOptions as="ul">
-                        {editOptions.map(({title, path, id}) => (
-                          <EditOptionsItem key={id} as="li">
-                            <NavLink
-                              to={path}
-                              style={({isActive}) => {
-                                return {
-                                  display: "inline-block",
-                                  background: "transparent",
-                                  color: isActive ? "black" : "#7751518a",
-                                  borderColor: isActive ? "black" : "#7751518a",
-                                  border: "1px solid",
-                                  padding: "7px 27px",
-                                  borderRadius: 5,
-                                };
-                              }}
-                            >
-                              {title}
-                            </NavLink>
-                          </EditOptionsItem>
-                        ))}
-                      </EditOptions>
                   </EditHeader>
                   <EditMain>
                       <Outlet/>

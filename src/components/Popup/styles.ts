@@ -37,4 +37,7 @@ export const PopupContent = styled(Paper)`
   box-shadow: 0 0 5px #fff;
   padding: 25px;
   margin: 25px;
+  
+  max-height: 96%;
+  overflow-y: auto;
 `;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Row, Block} from "../../UI/Layout";
-import {PopupContent} from "../Popup/styles";
+import {PopupContent, PopupWrapp} from "../Popup/styles";
+import Popup from "../Popup";
 // (PopupWrapp)
 export const EditWrapp = styled.div``;
 
@@ -39,11 +40,12 @@ export const EditGeneralButtons = styled.div`
   padding-bottom: 25px;
   background: #fff;
 
+  //position: sticky;
+  //bottom: 0;
+
   @media screen and (max-width: 480px) {
     display: flex;
-    position: sticky;
-    bottom: 0;
-
+    
     button {
       flex: 1;
     }
@@ -103,5 +105,6 @@ export const EditExitIcon = styled.img`
   height: 15px;
   width: 15px;
 `;
+
 
 

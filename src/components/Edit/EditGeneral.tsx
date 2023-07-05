@@ -47,7 +47,7 @@ const EditGeneral = () => {
 
   const usedInputs = [fullname, nickname, description, job, city];
 
-  const [isFullInputDisplay, setIsFullInputDisplay] = React.useState(false);
+  const [isFullInputDisplay, setIsFullInputDisplay] = React.useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const EditGeneral = () => {
   const moreButtonText = isFullInputDisplay ? "Close" : "More";
 
   const onMoreButtonClick = () => {
-    setIsFullInputDisplay(!isFullInputDisplay);
+    setIsFullInputDisplay(prev => !prev);
   };
 
   const onCancelButton = () => {
