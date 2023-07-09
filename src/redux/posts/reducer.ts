@@ -1,187 +1,192 @@
-import { posts as postsData, authUser } from "../mockData";
+import { authUser, posts as postsData } from "../mockData";
 import { IPost } from "../types";
 
 import {
-  LIKE_POST,
-  DISLIKE_POST,
-  SAVE_POST,
-  CREATE_POST,
-  ADD_COMMENT,
-  CHANGE_COMMENT,
-  DELETE_COMMENT,
+	ADD_COMMENT,
+	CHANGE_COMMENT,
+	CREATE_POST,
+	DELETE_COMMENT,
+	DELETE_POST,
+	DISLIKE_POST,
+	LIKE_POST,
+	SAVE_POST,
 } from "./types";
 
 export const initialState = { posts: postsData };
 
 export const postsReducer = (state = initialState, action: any) => {
-  const { posts } = state;
+	const { posts } = state;
 
-  switch (action.type) {
-    case LIKE_POST: {
-      const { id } = action;
+	switch (action.type) {
+		case LIKE_POST: {
+			const { id } = action;
 
-      const searchablePost: IPost | any = posts.find((post) => post.id === id);
-      const searchablePostIndex: number = posts.indexOf(searchablePost);
+			const searchablePost: IPost | any = posts.find((post) => post.id === id);
+			const searchablePostIndex: number = posts.indexOf(searchablePost);
 
-      const updatedPost = {
-        ...searchablePost,
-        liked: [
-          ...searchablePost.liked,
-          {
-            id: Date.now().toString(),
-            user: authUser?.user,
-          },
-        ],
-      };
+			const updatedPost = {
+				...searchablePost,
+				liked: [
+					...searchablePost.liked,
+					{
+						id: Date.now().toString(),
+						user: authUser?.user,
+					},
+				],
+			};
 
-      const updatedData = [...posts];
+			const updatedData = [...posts];
 
-      updatedData.splice(searchablePostIndex, 1, updatedPost);
+			updatedData.splice(searchablePostIndex, 1, updatedPost);
 
-      return { ...state, posts: [...updatedData] };
-    }
+			return { ...state, posts: [...updatedData] };
+		}
 
-    case DISLIKE_POST: {
-      const { id } = action;
+		case DISLIKE_POST: {
+			const { id } = action;
 
-      const searchablePost: IPost = posts.find((post) => post.id === id);
-      const searchablePostIndex = posts.indexOf(searchablePost);
+			const searchablePost: IPost = posts.find((post) => post.id === id);
+			const searchablePostIndex = posts.indexOf(searchablePost);
 
-      const searchablePostLikedData = searchablePost?.liked;
+			const searchablePostLikedData = searchablePost?.liked;
 
-      const searchablePostUpdatedLikesData = searchablePostLikedData.filter(
-        (likeObj) => likeObj.user.id !== authUser.user.id
-      );
+			const searchablePostUpdatedLikesData = searchablePostLikedData.filter(
+				(likeObj) => likeObj.user.id !== authUser.user.id,
+			);
 
-      const updatedPost = {
-        ...searchablePost,
-        liked: [...searchablePostUpdatedLikesData],
-      };
+			const updatedPost = {
+				...searchablePost,
+				liked: [...searchablePostUpdatedLikesData],
+			};
 
-      const updatedData = [...posts];
+			const updatedData = [...posts];
 
-      updatedData.splice(searchablePostIndex, 1, updatedPost);
+			updatedData.splice(searchablePostIndex, 1, updatedPost);
 
-      return { ...state, posts: [...updatedData] };
-    }
+			return { ...state, posts: [...updatedData] };
+		}
 
-    case SAVE_POST: {
-      // const { id } = action;
+		case SAVE_POST: {
+			// const { id } = action;
 
-      // const searchablePost = posts.find((post) => post.id === id);
+			// const searchablePost = posts.find((post) => post.id === id);
 
-      console.log(state);
+			console.log(state);
 
-      return state;
-    }
+			return state;
+		}
 
-    case CREATE_POST: {
-      const { text , data } = action.payload;
+		case CREATE_POST: {
+			const { text, data } = action.payload;
 
-      const basePostExample = {
-        id: Date.now().toString(),
-        postType: "text",
-        photo: data,
-        comments: [],
-        liked: [],
-      };
+			const basePostExample = {
+				id: Date.now().toString(),
+				postType: "text",
+				photo: data,
+				comments: [],
+				liked: [],
+			};
 
-      const updatedData = [
-        {
-          ...basePostExample,
-          user: authUser.user,
-          // date: `${weekName} , ${dayNumber} ${monthName} ${year}`,
-          date: `Sunday , 25 January 2022`,
-          text,
-        },
-        ...posts,
-      ];
+			const updatedData = [
+				{
+					...basePostExample,
+					user: authUser.user,
+					// date: `${weekName} , ${dayNumber} ${monthName} ${year}`,
+					date: `Sunday , 25 January 2022`,
+					text,
+				},
+				...posts,
+			];
 
-      return { ...state, posts: [...updatedData] };
-    }
+			return { ...state, posts: [...updatedData] };
+		}
 
-    case ADD_COMMENT: {
-      const { id: postId, text } = action.payload;
+		case DELETE_POST : {
 
-      const searchablePost: IPost | any = posts.find(
-        (post: IPost | any) => post.id === postId
-      );
-      const searchablePostIndex = posts.indexOf(searchablePost);
+		}
 
-      const searchablePostComments = searchablePost.comments;
+		case ADD_COMMENT: {
+			const { id: postId, text } = action.payload;
 
-      const updatedPost = {
-        ...searchablePost,
-        comments: [
-          ...searchablePostComments,
-          { id: Date.now().toString(), user: authUser.user, text },
-        ],
-      };
+			const searchablePost: IPost | any = posts.find(
+				(post: IPost | any) => post.id === postId,
+			);
+			const searchablePostIndex = posts.indexOf(searchablePost);
 
-      const updatedData = [...posts];
+			const searchablePostComments = searchablePost.comments;
 
-      updatedData.splice(searchablePostIndex, 1, updatedPost);
+			const updatedPost = {
+				...searchablePost,
+				comments: [
+					...searchablePostComments,
+					{ id: Date.now().toString(), user: authUser.user, text },
+				],
+			};
 
-      return { ...state, posts: [...updatedData] };
-    }
+			const updatedData = [...posts];
 
-    case DELETE_COMMENT: {
-      const { postId, commentId } = action.payload;
+			updatedData.splice(searchablePostIndex, 1, updatedPost);
 
-      const searchablePost: IPost | any = posts.find(
-        (post: IPost | any) => post.id === postId
-      );
-      const searchablePostIndex = posts.indexOf(searchablePost);
+			return { ...state, posts: [...updatedData] };
+		}
 
-      const updatedComments = [
-        ...searchablePost.comments.filter(
-          (comment: any) => comment.id !== commentId
-        ),
-      ];
+		case DELETE_COMMENT: {
+			const { postId, commentId } = action.payload;
 
-      const updatedPost = {
-        ...searchablePost,
-        comments: [...updatedComments],
-      };
+			const searchablePost: IPost | any = posts.find(
+				(post: IPost | any) => post.id === postId,
+			);
+			const searchablePostIndex = posts.indexOf(searchablePost);
 
-      const updatedData = [...posts];
+			const updatedComments = [
+				...searchablePost.comments.filter(
+					(comment: any) => comment.id !== commentId,
+				),
+			];
 
-      updatedData.splice(searchablePostIndex, 1, updatedPost);
+			const updatedPost = {
+				...searchablePost,
+				comments: [...updatedComments],
+			};
 
-      return { ...state, posts: [...updatedData] };
-    }
+			const updatedData = [...posts];
 
-    case CHANGE_COMMENT: {
-      const { postId, commentId, text } = action.payload;
+			updatedData.splice(searchablePostIndex, 1, updatedPost);
 
-      const searchablePost: IPost | any = posts.find(
-        (post: IPost | any) => post.id === postId
-      );
-      const searchablePostIndex = posts.indexOf(searchablePost);
+			return { ...state, posts: [...updatedData] };
+		}
 
-      const comments = [
-        ...searchablePost?.comments.map((comment: any) => {
-          if (comment.id === commentId) {
-            return { ...comment, text };
-          }
+		case CHANGE_COMMENT: {
+			const { postId, commentId, text } = action.payload;
 
-          return comment;
-        }),
-      ];
+			const searchablePost: IPost | any = posts.find(
+				(post: IPost | any) => post.id === postId,
+			);
+			const searchablePostIndex = posts.indexOf(searchablePost);
 
-      const updatedPost = {
-        ...searchablePost,
-        comments: [...comments],
-      };
+			const comments = [
+				...searchablePost?.comments.map((comment: any) => {
+					if (comment.id === commentId) {
+						return { ...comment, text };
+					}
 
-      const updatedData = [...posts];
+					return comment;
+				}),
+			];
 
-      updatedData.splice(searchablePostIndex, 1, updatedPost);
+			const updatedPost = {
+				...searchablePost,
+				comments: [...comments],
+			};
 
-      return { ...state, posts: [...updatedData] };
-    }
+			const updatedData = [...posts];
 
-    default:
-      return state;
-  }
+			updatedData.splice(searchablePostIndex, 1, updatedPost);
+
+			return { ...state, posts: [...updatedData] };
+		}
+
+		default:
+			return state;
+	}
 };

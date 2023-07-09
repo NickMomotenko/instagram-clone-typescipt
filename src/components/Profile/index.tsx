@@ -155,7 +155,16 @@ const Profile: React.FC<ProfileProps> = () => {
 				</ProfileContent>
 			</ProfileHeader>
 			<ProfileUserPosts>
-				<Posts posts={posts} $baseColumnCounter={2} contentRef={profilePostsRef} />
+				{
+					!posts ? <Text text="You don't have any posts yet" $bold $center style={{ fontSize: 20 }} /> :
+						<Block><Text text="Your posts" $bold style={{ fontSize: 20, marginBottom: 20 }} />
+							<Posts
+								posts={posts}
+								$baseColumnCounter={2}
+								contentRef={profilePostsRef} /></Block>
+
+				}
+
 			</ProfileUserPosts>
 			<ProfileOutlet>
 				<Outlet />
