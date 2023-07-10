@@ -77,6 +77,8 @@ const Post: React.FC<PostProps> = ({
 
 	const likePost = (id: number | string) => {
 		if (!like) {
+
+
 			setLike(true);
 			dispatch({ type: LIKE_POST, id });
 		} else {
@@ -118,7 +120,7 @@ const Post: React.FC<PostProps> = ({
 	useClickOutside(commentRef, () => isCommentsBarActive.setIsActive(false));
 
 	return (
-		<PostWrapp ref={commentRef} {...props}>
+		<PostWrapp ref={commentRef} $isMyPost={isMyPost} {...props}>
 			<PostRow style={{ padding: "0 15px" }}>
 				<Block style={{ marginRight: 11 }}>
 					<Avatar
