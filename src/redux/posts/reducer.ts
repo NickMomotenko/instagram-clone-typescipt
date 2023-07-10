@@ -10,24 +10,34 @@ import {
 	DISLIKE_POST,
 	LIKE_POST,
 	SAVE_POST,
+	UPDATE_GLOBAL_POST,
 } from "./types";
 
-export const initialState = { posts: postsData };
+export const initialState = { posts: [...authUser.posts, ...postsData] };
 
 export const postsReducer = (state = initialState, action: any) => {
 	const { posts } = state;
 
 	switch (action.type) {
+		case UPDATE_GLOBAL_POST: {
+			const { data } = action.payload;
+
+			return { ...state, posts: [...data] };
+		}
+
 		case LIKE_POST: {
 			const { id } = action;
 
 			const searchablePost: IPost | any = posts.find((post) => post.id === id);
+
+			if (!searchablePost) return state;
+
 			const searchablePostIndex: number = posts.indexOf(searchablePost);
 
 			const updatedPost = {
 				...searchablePost,
 				liked: [
-					...searchablePost.liked,
+					...searchablePost?.liked,
 					{
 						id: Date.now().toString(),
 						user: authUser?.user,
@@ -45,13 +55,16 @@ export const postsReducer = (state = initialState, action: any) => {
 		case DISLIKE_POST: {
 			const { id } = action;
 
-			const searchablePost: IPost = posts.find((post) => post.id === id);
+			const searchablePost: IPost | any = posts.find((post) => post.id === id);
+
+			if (!searchablePost) return state;
+
 			const searchablePostIndex = posts.indexOf(searchablePost);
 
 			const searchablePostLikedData = searchablePost?.liked;
 
-			const searchablePostUpdatedLikesData = searchablePostLikedData.filter(
-				(likeObj) => likeObj.user.id !== authUser.user.id,
+			const searchablePostUpdatedLikesData = searchablePostLikedData?.filter(
+				(likeObj: any) => likeObj.user.id !== authUser.user.id,
 			);
 
 			const updatedPost = {
@@ -67,12 +80,6 @@ export const postsReducer = (state = initialState, action: any) => {
 		}
 
 		case SAVE_POST: {
-			// const { id } = action;
-
-			// const searchablePost = posts.find((post) => post.id === id);
-
-			console.log(state);
-
 			return state;
 		}
 

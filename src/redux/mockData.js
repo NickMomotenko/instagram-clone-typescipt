@@ -332,7 +332,7 @@ export const authUser = {
 	},
 	posts: [
 		{
-			id: 1,
+			id: uuid(),
 			postType: "text",
 			user: {
 				id: 1,
@@ -353,7 +353,7 @@ export const authUser = {
 			liked: [],
 		},
 		{
-			id: 2,
+			id: uuid(),
 			postType: "text",
 			user: {
 				id: 1,
@@ -374,7 +374,7 @@ export const authUser = {
 			liked: [],
 		},
 		{
-			id: 3,
+			id: uuid(),
 			postType: "text",
 			user: {
 				id: 1,

@@ -21,7 +21,7 @@ import { useActive } from "./hooks/useActive";
 import Edit from "./components/Edit";
 import Profile from "./components/Profile";
 import EditGeneral from "./components/Edit/EditGeneral";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { IPost } from "./redux/types";
 import { useWindowResize } from "./hooks/useWindowResize";
 
@@ -42,18 +42,17 @@ export const App = () => {
 
 	const windowWidth = useWindowResize();
 
-	const mixedPosts = [...authUserPosts, ...globalPosts];
 
 	// delay timer in sec
 	const delayTimer = 3;
 
-	React.useEffect(() => {
+	useEffect(() => {
 		// dispatch({ type: SET_PRELOADER_STATUS, payload: false });
 		// setTimeout(() => {
 		//   dispatch({ type:  SET_PRELOADER_STATUS, payload: true });
 		// }, delayTimer * 1000);
 	}, []);
-
+	
 	useEffect(() => {
 		if (windowWidth > 1100) {
 			if (postContentRef.current) {
@@ -103,7 +102,7 @@ export const App = () => {
 					<Route path={authRoutes.forgot} element={<ForgotPassword />} />
 				</Route>
 				<Route path={baseRoutes.base} element={<Main />}>
-					<Route path="" element={<Posts posts={mixedPosts} contentRef={postContentRef} />} />
+					<Route path="" element={<Posts posts={globalPosts} contentRef={postContentRef} />} />
 					<Route path={baseRoutes.profile} element={<Profile />}>
 						<Route path="edit" element={<Edit />}>
 							<Route path="general" element={<EditGeneral />} />

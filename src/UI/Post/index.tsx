@@ -29,6 +29,7 @@ import likeIcon from "../../assets/icons/4.svg";
 
 import dots from "../../assets/icons/dots.svg";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { IPost } from "../../redux/types";
 
 const POST_TYPES = {
 	VIDEO: "video",
@@ -38,6 +39,8 @@ type PostProps = {
 	post: any;
 	authUser: any;
 	isMyPost?: boolean;
+	isLikedByMe: boolean;
+	isSavedByMe: boolean;
 	userId?: number | string;
 	as?: string | any;
 };
@@ -46,12 +49,14 @@ const Post: React.FC<PostProps> = ({
 																		 post,
 																		 authUser,
 																		 isMyPost,
+																		 isLikedByMe,
+																		 isSavedByMe,
 																		 userId,
 																		 ...props
 																	 }) => {
-	const [like, setLike] = useState(false);
+	const [like, setLike] = useState<boolean>(isLikedByMe);
 	const [share, setShare] = useState(false);
-	const [save, setSave] = useState(false);
+	const [save, setSave] = useState(isSavedByMe);
 
 	const dispatch = useDispatch();
 
@@ -77,13 +82,38 @@ const Post: React.FC<PostProps> = ({
 
 	const likePost = (id: number | string) => {
 		if (!like) {
+			if (isMyPost) {
+				setLike(true);
 
+				const updatedUserData = {
+					...authUser, posts: authUser.posts.map((userPost: any) => {
+						if (userPost.id === id) {
+							return { ...userPost, liked: [...userPost.liked, authUser] };
+						}
 
-			setLike(true);
-			dispatch({ type: LIKE_POST, id });
+						return userPost;
+					}),
+				};
+
+				dispatch({ type: LIKE_POST, id });
+				dispatch({ type: UPDATE_USER, updatedUserData });
+
+			} else {
+				const updatedUserData = { ...authUser, liked: [...authUser.liked, post] };
+
+				setLike(true);
+				dispatch({ type: LIKE_POST, id });
+				dispatch({ type: UPDATE_USER, updatedUserData });
+			}
 		} else {
+			const updatedUserData = {
+				...authUser,
+				liked: [...authUser.liked?.filter((filterPost: IPost) => filterPost?.id !== id)],
+			};
+
 			setLike(false);
 			dispatch({ type: DISLIKE_POST, id });
+			dispatch({ type: UPDATE_USER, updatedUserData });
 		}
 	};
 
@@ -102,16 +132,15 @@ const Post: React.FC<PostProps> = ({
 				};
 
 				dispatch({ type: UPDATE_USER, updatedUserData });
-				// dispatch({ type: SAVE_POST });
 			}
 		} else {
 			setSave(false);
 
-			const updatedUserSaved = authUser.saved.filter(
-				(savedPost: any) => savedPost.id !== post.id,
-			);
-
-			const updatedUserData = { ...authUser, saved: [...updatedUserSaved] };
+			const updatedUserData = {
+				...authUser, saved: [...authUser.saved?.filter(
+					(savedPost: any) => savedPost.id !== post.id,
+				)],
+			};
 
 			dispatch({ type: UPDATE_USER, updatedUserData });
 		}
@@ -156,6 +185,7 @@ const Post: React.FC<PostProps> = ({
 						icon={shareIcon}
 						active={share}
 						onClick={() => setShare(!share)}
+						disabled
 					/>
 					<PostButton
 						icon={saveIcon}
@@ -164,7 +194,7 @@ const Post: React.FC<PostProps> = ({
 						style={{ marginLeft: "auto" }}
 					/>
 				</PostRow>
-				{liked?.length !== 0 && (
+				{liked.length !== 0 && (
 					<PostRow $center $btw>
 						<Row $center style={{ marginRight: 10 }}>
 							<PostLikedText>
