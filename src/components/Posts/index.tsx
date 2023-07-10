@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 
 import { PostList, PostsWrapp } from "./styled";
-
-import Post from "../../UI/Post";
 import { RootState } from "../../redux/store";
+import Post from "../../UI/Post";
 import { IPost } from "../../redux/types";
+import { Skeleton } from "../Skeleton/Skeleton";
 
 type PostsProps = {
-	posts: any[];
+	posts: IPost[];
 	$baseColumnCounter?: number | string;
 	contentRef?: any;
 }
@@ -17,10 +17,18 @@ type PostsProps = {
 const Posts: React.FC<PostsProps> = React.forwardRef(({ posts, $baseColumnCounter, contentRef }) => {
 	const { authUser } = useSelector((state: RootState) => state.authUser);
 
+	const [renderedPosts, setRenderedPosts] = useState([]);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setRenderedPosts(posts);
+		}, 1500);
+	}, []);
+
 	return (
 		<PostsWrapp>
 			<PostList style={{ marginBottom: -20 }} $baseColumnCounter={$baseColumnCounter} ref={contentRef}>
-				{posts?.map((post: IPost) => {
+				{renderedPosts.length ? renderedPosts?.map((post: IPost) => {
 					const isMyPost = authUser.user.id === post?.user.id;
 					const isLikedByMe = isMyPost ?
 						post.liked?.find(postUser => postUser.user.id === authUser.user.id)
@@ -40,10 +48,14 @@ const Posts: React.FC<PostsProps> = React.forwardRef(({ posts, $baseColumnCounte
 							authUser={authUser}
 						/>
 					);
-				})}
+				}) : [...new Array(5)].map((_, index: number) => <Skeleton key={index} itemTag="li"
+																																	 style={{ borderColor: "red" }} />)}
+
 			</PostList>
 		</PostsWrapp>
-	);
+	)
+		;
 });
+
 
 export default Posts;

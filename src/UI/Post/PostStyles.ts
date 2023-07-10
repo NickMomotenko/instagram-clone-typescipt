@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Button from "../Button";
 import { Row } from "../Layout";
 
-export const PostWrapp = styled.div<{ $isMyPost: boolean }>`
+export const PostWrapp = styled.div<{ $isMyPost?: boolean }>`
   background: #ffffff;
   border: 1px solid;
   box-shadow: 0px 0px 10px rgb(222 230 237 / 40%);
@@ -19,7 +19,6 @@ export const PostWrapp = styled.div<{ $isMyPost: boolean }>`
   overflow: hidden;
 
   border-color: ${({ $isMyPost }) => $isMyPost ? "#ff000030" : "#f0f6fd"};
-
 `;
 
 export const PostImage = styled.img`
