@@ -2,13 +2,7 @@ import React, { useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
 
-import {
-	PostButton,
-	PostImage,
-	PostLikedText,
-	PostRow,
-	PostWrapp,
-} from "./PostStyles";
+import { PostButton, PostLikedText, PostRow, PostWrapp } from "./PostStyles";
 
 import { DISLIKE_POST, LIKE_POST } from "../../redux/posts/types";
 import { UPDATE_USER } from "../../redux/user/types";
@@ -36,6 +30,7 @@ import likeIcon from "../../assets/icons/4.svg";
 import dots from "../../assets/icons/dots.svg";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { IPost } from "../../redux/types";
+import { LazyImage } from "../../containers/LazyImage";
 
 const POST_TYPES = {
 	VIDEO: "video",
@@ -162,12 +157,6 @@ const Post: React.FC<PostProps> = ({
 		}
 	};
 
-	const handleLoad = () => {
-		if (imageWrappRef.current) {
-			imageWrappRef.current.style.filter = `blur(3px)`;
-		}
-	};
-
 	useClickOutside(commentRef, () => isCommentsBarActive.setIsActive(false));
 
 	return (
@@ -193,11 +182,7 @@ const Post: React.FC<PostProps> = ({
 			</PostRow>
 			<PostRow>
 				{post.postType === POST_TYPES.VIDEO && <Video url={videoUrl} />}
-				{isSlider ? (
-					<CustomSlider slides={photo} />
-				) : (
-					<PostImage src={photo} onLoad={handleLoad} />
-				)}
+				{isSlider ? <CustomSlider slides={photo} /> : <LazyImage src={photo} />}
 			</PostRow>
 			<Block style={{ padding: "0 15px" }}>
 				<PostRow>

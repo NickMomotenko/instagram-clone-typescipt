@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import { useSwipeable } from "react-swipeable";
 
-import { CustomSliderWrapp, CustomSliderItem, SliderButton } from "./styled";
+import { CustomSliderWrapp, SliderButton } from "./styled";
 
 import { Row } from "../../UI/Layout";
+import { LazyImage } from "../../containers/LazyImage";
 
 type CustomSliderProps = {
 	slides?: string[];
@@ -60,13 +61,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
 		<CustomSliderWrapp ref={wrappRef} {...handlers}>
 			<Row ref={listRef} style={{ transition: "transform .4s" }}>
 				{slides?.map((slide: string, index: number) => {
-					return (
-						<CustomSliderItem
-							key={index}
-							style={{ background: `url(${slide})` }}
-							{...handlers}
-						/>
-					);
+					return <LazyImage key={index} src={slide} {...handlers} />;
 				})}
 			</Row>
 			<Row style={{ justifyContent: "center", marginTop: 10 }}>

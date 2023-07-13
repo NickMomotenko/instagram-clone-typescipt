@@ -23,7 +23,7 @@ const Posts: React.FC<PostsProps> = React.forwardRef(
 		useEffect(() => {
 			setTimeout(() => {
 				setRenderedPosts(posts);
-			}, 2000);
+			}, 0);
 		}, []);
 
 		return (
