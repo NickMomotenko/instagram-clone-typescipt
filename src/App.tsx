@@ -28,12 +28,12 @@ import { useWindowResize } from "./hooks/useWindowResize";
 export const App = () => {
 	const { isPreloaderActive } = useSelector((state: RootState) => state.app);
 	const { posts: globalPosts }: IPost[] | any = useSelector(
-		(state: RootState) => state.posts,
+		(state: RootState) => state.posts
 	);
 
-	const { authUser: { posts: authUserPosts } } = useSelector(
-		(state: RootState) => state.authUser,
-	);
+	const {
+		authUser: { posts: authUserPosts },
+	} = useSelector((state: RootState) => state.authUser);
 
 	const dispatch = useDispatch<AppDispatch>();
 	const popup = useActive();
@@ -41,7 +41,6 @@ export const App = () => {
 	const postContentRef = useRef<any>(null);
 
 	const windowWidth = useWindowResize();
-
 
 	// delay timer in sec
 	const delayTimer = 3;
@@ -52,7 +51,7 @@ export const App = () => {
 		//   dispatch({ type:  SET_PRELOADER_STATUS, payload: true });
 		// }, delayTimer * 1000);
 	}, []);
-	
+
 	useEffect(() => {
 		if (windowWidth > 1100) {
 			if (postContentRef.current) {
@@ -85,7 +84,6 @@ export const App = () => {
 		}
 	}, [windowWidth]);
 
-
 	return (
 		<AppWrapp>
 			<Preloader isActive={isPreloaderActive} />
@@ -102,7 +100,10 @@ export const App = () => {
 					<Route path={authRoutes.forgot} element={<ForgotPassword />} />
 				</Route>
 				<Route path={baseRoutes.base} element={<Main />}>
-					<Route path="" element={<Posts posts={globalPosts} contentRef={postContentRef} />} />
+					<Route
+						path=""
+						element={<Posts posts={globalPosts} contentRef={postContentRef} />}
+					/>
 					<Route path={baseRoutes.profile} element={<Profile />}>
 						<Route path="edit" element={<Edit />}>
 							<Route path="general" element={<EditGeneral />} />
