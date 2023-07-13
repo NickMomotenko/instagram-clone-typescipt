@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
 
-import { PostButton, PostImage, PostLikedText, PostRow, PostWrapp } from "./PostStyles";
+import {
+	PostButton,
+	PostImage,
+	PostLikedText,
+	PostRow,
+	PostWrapp,
+} from "./PostStyles";
 
 import { DISLIKE_POST, LIKE_POST } from "../../redux/posts/types";
 import { UPDATE_USER } from "../../redux/user/types";
@@ -46,21 +52,21 @@ type PostProps = {
 };
 
 const Post: React.FC<PostProps> = ({
-																		 post,
-																		 authUser,
-																		 isMyPost,
-																		 isLikedByMe,
-																		 isSavedByMe,
-																		 userId,
-																		 ...props
-																	 }) => {
+	post,
+	authUser,
+	isMyPost,
+	isLikedByMe,
+	isSavedByMe,
+	userId,
+	...props
+}) => {
 	const [like, setLike] = useState<boolean>(isLikedByMe);
 	const [share, setShare] = useState(false);
 	const [save, setSave] = useState(isSavedByMe);
 
 	const dispatch = useDispatch();
 
-	const commentRef = React.useRef(null);
+	const commentRef = useRef(null);
 
 	let { text, videoUrl, photo, date, comments, liked } = post;
 
@@ -86,7 +92,8 @@ const Post: React.FC<PostProps> = ({
 				setLike(true);
 
 				const updatedUserData = {
-					...authUser, posts: authUser.posts.map((userPost: any) => {
+					...authUser,
+					posts: authUser.posts.map((userPost: any) => {
 						if (userPost.id === id) {
 							return { ...userPost, liked: [...userPost.liked, authUser] };
 						}
@@ -97,9 +104,11 @@ const Post: React.FC<PostProps> = ({
 
 				dispatch({ type: LIKE_POST, id });
 				dispatch({ type: UPDATE_USER, updatedUserData });
-
 			} else {
-				const updatedUserData = { ...authUser, liked: [...authUser.liked, post] };
+				const updatedUserData = {
+					...authUser,
+					liked: [...authUser.liked, post],
+				};
 
 				setLike(true);
 				dispatch({ type: LIKE_POST, id });
@@ -108,7 +117,11 @@ const Post: React.FC<PostProps> = ({
 		} else {
 			const updatedUserData = {
 				...authUser,
-				liked: [...authUser.liked?.filter((filterPost: IPost) => filterPost?.id !== id)],
+				liked: [
+					...authUser.liked?.filter(
+						(filterPost: IPost) => filterPost?.id !== id
+					),
+				],
 			};
 
 			setLike(false);
@@ -137,12 +150,21 @@ const Post: React.FC<PostProps> = ({
 			setSave(false);
 
 			const updatedUserData = {
-				...authUser, saved: [...authUser.saved?.filter(
-					(savedPost: any) => savedPost.id !== post.id,
-				)],
+				...authUser,
+				saved: [
+					...authUser.saved?.filter(
+						(savedPost: any) => savedPost.id !== post.id
+					),
+				],
 			};
 
 			dispatch({ type: UPDATE_USER, updatedUserData });
+		}
+	};
+
+	const handleLoad = () => {
+		if (imageWrappRef.current) {
+			imageWrappRef.current.style.filter = `blur(3px)`;
 		}
 	};
 
@@ -171,7 +193,11 @@ const Post: React.FC<PostProps> = ({
 			</PostRow>
 			<PostRow>
 				{post.postType === POST_TYPES.VIDEO && <Video url={videoUrl} />}
-				{isSlider ? <CustomSlider slides={photo} /> : <PostImage src={photo} />}
+				{isSlider ? (
+					<CustomSlider slides={photo} />
+				) : (
+					<PostImage src={photo} onLoad={handleLoad} />
+				)}
 			</PostRow>
 			<Block style={{ padding: "0 15px" }}>
 				<PostRow>
