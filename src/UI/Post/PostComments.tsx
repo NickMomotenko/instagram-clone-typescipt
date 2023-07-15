@@ -20,7 +20,11 @@ import Text from "../Text";
 import Input from "../../UI/Input";
 import DefaultButton from "../../UI/DefaultButton";
 
-import { ADD_COMMENT, CHANGE_COMMENT, DELETE_COMMENT } from "../../redux/posts/types";
+import {
+	ADD_COMMENT,
+	CHANGE_COMMENT,
+	DELETE_COMMENT,
+} from "../../redux/posts/types";
 import { IPostComment } from "../../redux/types";
 import Button from "../Button";
 
@@ -32,22 +36,22 @@ type PostCommentsProps = {
 	post?: any;
 	isCommentsBarActive?: {
 		isActive?: boolean;
-		setIsActive?: () => void;
+		setIsActive?: any;
 	};
 	userId?: number | string;
 	onClick?: () => void;
 };
 
 const PostComments: React.FC<PostCommentsProps> = ({
-																										 post,
-																										 isCommentsBarActive,
-																										 userId,
-																										 onClick,
-																									 }) => {
+	post,
+	isCommentsBarActive,
+	userId,
+	onClick,
+}) => {
 	const [isChangeComment, setIsChangeComment] = useState(false);
 	const [currentComment, setCurrentComment] = useState<any>(null);
 
-	const dispath = useDispatch();
+	const dispatch = useDispatch();
 
 	const commentInputRef = useRef<any>(null);
 
@@ -67,7 +71,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
 			return;
 		}
 
-		dispath({
+		dispatch({
 			type: ADD_COMMENT,
 			payload: { id: post.id, text: commentInput.value },
 		});
@@ -79,7 +83,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
 		setIsChangeComment(true);
 
 		const comment = post.comments.find(
-			(comment: any) => comment.id === commentId,
+			(comment: any) => comment.id === commentId
 		);
 
 		commentInput.setValue(comment?.text);
@@ -96,7 +100,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
 			return;
 		}
 
-		dispath({
+		dispatch({
 			type: CHANGE_COMMENT,
 			payload: {
 				postId: post.id,
@@ -111,7 +115,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
 	};
 
 	const deleteComment = (id: number | string) => {
-		dispath({
+		dispatch({
 			type: DELETE_COMMENT,
 			payload: {
 				postId: post.id,

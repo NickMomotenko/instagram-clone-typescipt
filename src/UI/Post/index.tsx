@@ -181,8 +181,13 @@ const Post: React.FC<PostProps> = ({
 				/>
 			</PostRow>
 			<PostRow>
-				{post.postType === POST_TYPES.VIDEO && <Video url={videoUrl} />}
-				{isSlider ? <CustomSlider slides={photo} /> : <LazyImage src={photo} />}
+				{post.postType === POST_TYPES.VIDEO ? (
+					<Video url={videoUrl} />
+				) : isSlider ? (
+					<CustomSlider slides={photo} />
+				) : (
+					<LazyImage src={photo} />
+				)}
 			</PostRow>
 			<Block style={{ padding: "0 15px" }}>
 				<PostRow>

@@ -44,7 +44,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
 				});
 			} else {
 				setActiveIndex((prev) => {
-					if (prev === slides.length - 1) {
+					if (prev === slides?.length - 1) {
 						doTransition(prev);
 						return prev;
 					} else {
@@ -58,7 +58,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
 	});
 
 	return (
-		<CustomSliderWrapp ref={wrappRef} {...handlers}>
+		<CustomSliderWrapp {...handlers} ref={wrappRef}>
 			<Row ref={listRef} style={{ transition: "transform .4s" }}>
 				{slides?.map((slide: string, index: number) => {
 					return <LazyImage key={index} src={slide} {...handlers} />;
@@ -68,7 +68,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({ slides }) => {
 				{slides?.map((_, index) => (
 					<SliderButton
 						key={index}
-						active={index === activeIndex}
+						$active={index === activeIndex}
 						onClick={() => changeActiveSlide(index)}
 					/>
 				))}
