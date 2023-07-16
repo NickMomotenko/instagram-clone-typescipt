@@ -27,6 +27,7 @@ import { useWindowResize } from "../../hooks/useWindowResize";
 import DirectSidebar from "./DirectSidebar";
 import Avatar from "../../UI/Avatar";
 import { RootState } from "../../redux/store";
+import { VoiceMessage } from "../../containers/VoiceMessage/VoiceMessage";
 
 const Direct = () => {
 	const { messages, activeChatIndex, activeChat } = useSelector(
@@ -94,6 +95,7 @@ const Direct = () => {
 							onClick={() => setIsGeneralChatActive(!isGeneralChatActive)}
 						/>
 					</Row>
+					<VoiceMessage />
 					<Row style={{ width: "100%", position: "relative" }}>
 						<DirectSidebar
 							messages={messages}

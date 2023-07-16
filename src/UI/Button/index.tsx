@@ -19,13 +19,13 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const Button: React.FC<ButtonProps> = ({
-																				 text,
-																				 icon,
-																				 active,
-																				 fill,
-																				 children,
-																				 ...rest
-																			 }) => {
+	text,
+	icon,
+	active,
+	fill,
+	children,
+	...rest
+}) => {
 	return (
 		<ButtonWrapp {...rest}>
 			{children}
