@@ -4,6 +4,7 @@ import {
 	VoiceGraph,
 	VoiceMessageContent,
 	VoiceMessageWrapp,
+	VoiceProgress,
 	VoiceTimer,
 } from "./styled";
 import ReactAudioPlayer from "react-audio-player";
@@ -25,12 +26,16 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 	url = voiceExample,
 }) => {
 	const [play, setPlay] = useState<boolean>(false);
-	const [duration, setDuration] = useState<any>("");
-	const [currentTime, setCurrentTime] = useState<any>("");
+	const [duration, setDuration] = useState<any>(0);
+	const [currentTime, setCurrentTime] = useState<any>(0);
 
 	let audioRef = useRef<any>(null);
 
 	const timerRef = useRef<any>(null);
+	const testRef = useRef<any>(null);
+	const progressRef = useRef<any>(null);
+
+	const togglePlayIcon = play ? pauseIcon : playIcon;
 
 	useEffect(() => {
 		if (audioRef.current) {
@@ -41,7 +46,15 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 
 	useEffect(() => {
 		if (timerRef.current) {
-			timerRef.current.innerText = fancyTimeFormat(currentTime);
+			if (currentTime === 0) {
+				timerRef.current.innerText = fancyTimeFormat(duration);
+			} else {
+				timerRef.current.innerText = fancyTimeFormat(currentTime);
+			}
+
+			progressRef.current.style.width = `calc(${
+				(100 * currentTime) / duration
+			}%)`;
 		}
 	}, [currentTime]);
 
@@ -64,16 +77,33 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 		return ret;
 	}
 
-	const handleTogglePlay = () => setPlay((prev) => !prev);
+	const handleTogglePlay = (event: any) => {
+		event.stopPropagation();
+		setPlay((prev) => !prev);
+	};
 
 	const handleChangeCurrentTime = (seconds: number) => {
 		setCurrentTime(seconds);
 	};
 
-	const togglePlayIcon = play ? pauseIcon : playIcon;
+	const handleSeek = (event: any) => {
+		const targetStyles = event.currentTarget.getBoundingClientRect();
+
+		let leftPosition =
+			((event.clientX - targetStyles.left) * 100) / targetStyles.width;
+
+		let newCurrentTime = (duration * leftPosition) / 100;
+
+		audioRef.current.audioEl.current.currentTime = newCurrentTime;
+
+		setCurrentTime(newCurrentTime);
+
+		setPlay(true);
+	};
 
 	return (
-		<VoiceMessageWrapp duration={duration} currentTime={currentTime}>
+		<VoiceMessageWrapp ref={testRef} onClick={handleSeek}>
+			<VoiceProgress ref={progressRef} />
 			<VoiceMessageContent>
 				<Button view="ghost" onClick={handleTogglePlay}>
 					<Icon url={togglePlayIcon} />
@@ -89,15 +119,13 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 					onEnded={() => {
 						setPlay(false);
 						setCurrentTime(0);
+						progressRef.current.style.width = `0%`;
 					}}
 					onLoadedMetadata={(event: any) => {
-						setDuration(audioRef.current.audioEl.current.duration.toFixed(0));
-						timerRef.current.innerText = fancyTimeFormat(
-							audioRef.current.audioEl.current.duration
-						);
+						setDuration(Number(audioRef.current.audioEl.current.duration));
 					}}
 				/>
-				<VoiceTimer ref={timerRef}></VoiceTimer>
+				<VoiceTimer ref={timerRef} />
 			</VoiceMessageContent>
 		</VoiceMessageWrapp>
 	);

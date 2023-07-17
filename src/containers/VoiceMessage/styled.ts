@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
-export const VoiceMessageWrapp = styled.div<{
-	duration?: any;
-	currentTime?: any;
-}>`
+export const VoiceMessageWrapp = styled.div`
 	max-width: 300px;
 	min-width: 300px;
 	padding: 10px;
@@ -12,27 +9,24 @@ export const VoiceMessageWrapp = styled.div<{
 	min-height: 52px;
 	max-height: 52px;
 
+	display: inline-block;
+
 	position: relative;
 	overflow: hidden;
+`;
 
-	&:before {
-		content: "";
+export const VoiceProgress = styled.div`
+	display: block;
+	height: 100%;
 
-		display: block;
-		height: 100%;
-		width: ${({ duration, currentTime }) =>
-			!duration && !currentTime
-				? "0%"
-				: `calc((${currentTime} * 100%) / ${duration})`};
-		transition: width 0.02s;
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
+	transition: width 0.02s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
 
-		background: rgb(183 176 213 / 40%);
-		pointer-events: none;
-	}
+	background: rgb(183 176 213 / 40%);
+	pointer-events: none;
 `;
 
 export const VoiceMessageContent = styled.div`
