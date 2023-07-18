@@ -18,6 +18,7 @@ import playIcon from "../../assets/icons/play.svg";
 import pauseIcon from "../../assets/icons/pause.svg";
 
 import soundGraph from "../../assets/icons/sound-graph.svg";
+import { useAudioRecorder } from "react-audio-voice-recorder";
 
 type VoiceMessageProps = {
 	url: string;

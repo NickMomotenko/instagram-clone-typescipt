@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,6 +10,9 @@ import {
 	DirectMessage,
 	DirectMessageText,
 	DirectWrapp,
+	MicrophoneButton,
+	MicrophoneButtonBlock,
+	RecordingIcon,
 } from "./styles";
 
 import { Block, Row } from "../../UI/Layout";
@@ -28,6 +31,12 @@ import DirectSidebar from "./DirectSidebar";
 import Avatar from "../../UI/Avatar";
 import { RootState } from "../../redux/store";
 import { VoiceMessage } from "../../containers/VoiceMessage/VoiceMessage";
+import Button from "../../UI/Button";
+import Icon from "../../UI/Icon";
+
+import microphoneIcon from "../../assets/icons/micro.svg";
+import recordingIcon from "../../assets/icons/audio-wave.gif";
+import { useAudioRecorder } from "react-audio-voice-recorder";
 
 const Direct = () => {
 	const { messages, activeChatIndex, activeChat } = useSelector(
@@ -39,19 +48,37 @@ const Direct = () => {
 
 	const [isGeneralChatActive, setIsGeneralChatActive] = useState(false);
 
-	const messagesBodyRef = React.useRef(null);
+	const { recordingBlob, startRecording, stopRecording, isRecording } =
+		useAudioRecorder();
+
+	const messagesBodyRef = useRef<any>(null);
+	const recordingIconRef = useRef<any>(null);
 
 	const isTabletWidth = useWindowResize() <= 768;
 
-	React.useEffect(() => {
+	useEffect(() => {
 		document.body.style.overflow = "hidden";
 
 		normalizeDirectContentBodyScroll();
 	}, []);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		normalizeDirectContentBodyScroll();
 	}, [messages, activeChat]);
+
+	useEffect(() => {
+		if (isRecording) {
+			recordingIconRef.current.style.visibility = "visible";
+		} else {
+			recordingIconRef.current.style.visibility = "hidden";
+		}
+	}, [isRecording]);
+
+	useEffect(() => {
+		if (recordingBlob) {
+			console.log(URL.createObjectURL(recordingBlob));
+		}
+	}, [recordingBlob]);
 
 	const sendInput = useInput({ initialValue: "" });
 
@@ -148,6 +175,29 @@ const Direct = () => {
 										noError
 										style={{ flex: 1 }}
 									/>
+									<MicrophoneButtonBlock>
+										{
+											<RecordingIcon
+												src={recordingIcon}
+												alt="recording icon"
+												ref={recordingIconRef}
+											/>
+										}
+										<MicrophoneButton
+											view="ghost"
+											onMouseUp={() => {
+												console.log("отзажата");
+												stopRecording();
+											}}
+											onMouseDown={() => {
+												console.log("зажата");
+												startRecording();
+											}}
+											$isRecording={isRecording}
+										>
+											<Icon url={microphoneIcon} />
+										</MicrophoneButton>
+									</MicrophoneButtonBlock>
 									<DefaultButton
 										text="Send"
 										onClick={() => handleSend(sendInput?.value)}

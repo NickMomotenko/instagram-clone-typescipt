@@ -1,7 +1,8 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import DefaultButton from "../../UI/DefaultButton";
 
 import { Block } from "../../UI/Layout";
+import { ButtonWrapp } from "../../UI/Button/styled";
 
 export const DirectWrapp = styled.div`
 	height: 100%;
@@ -167,4 +168,41 @@ export const AllChatButton = styled(DefaultButton)`
 	@media screen and (min-width: 768px) {
 		display: none;
 	}
+`;
+
+export const MicrophoneButtonBlock = styled.div`
+	display: inline-flex;
+	align-items: center;
+	margin-left: 10px;
+`;
+
+const pulse = keyframes`
+  from {
+    box-shadow: 0 0 10px blue;
+  }
+
+  to {
+    box-shadow: 0 0 20px blue;
+  }
+`;
+
+export const MicrophoneButton = styled(ButtonWrapp)<{ $isRecording?: boolean }>`
+	margin-left: 3px;
+	border-radius: 50%;
+	padding: 2px 3px;
+	box-shadow: ${({ $isRecording }) => $isRecording && "0 0 10px blue"};
+	animation: 1s linear infinite;
+	animation-name: ${({ $isRecording }) => $isRecording && "pulse"};
+
+	svg {
+		height: 25px;
+		width: 25px;
+	}
+`;
+
+export const RecordingIcon = styled.img`
+	display: inline-block;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px;
 `;

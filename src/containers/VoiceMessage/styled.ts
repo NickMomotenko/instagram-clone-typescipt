@@ -47,4 +47,5 @@ export const VoiceGraph = styled.div`
 export const VoiceTimer = styled.div`
 	margin-left: 10px;
 	font-size: 11px;
+	color: #fff;
 `;
