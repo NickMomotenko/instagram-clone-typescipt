@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import {
+	VoiceError,
 	VoiceGraph,
 	VoiceMessageContent,
 	VoiceMessageWrapp,
@@ -12,23 +13,19 @@ import ReactAudioPlayer from "react-audio-player";
 import Button from "../../UI/Button";
 import Icon from "../../UI/Icon";
 
-import voiceExample from "../../assets/audio/brian.mp3";
-
 import playIcon from "../../assets/icons/play.svg";
 import pauseIcon from "../../assets/icons/pause.svg";
 
 import soundGraph from "../../assets/icons/sound-graph.svg";
-import { useAudioRecorder } from "react-audio-voice-recorder";
 
 type VoiceMessageProps = {
 	url: string;
 };
-export const VoiceMessage: React.FC<VoiceMessageProps> = ({
-	url = voiceExample,
-}) => {
+export const VoiceMessage: React.FC<VoiceMessageProps> = ({ url }) => {
 	const [play, setPlay] = useState<boolean>(false);
 	const [duration, setDuration] = useState<any>(0);
 	const [currentTime, setCurrentTime] = useState<any>(0);
+	const [error, setError] = useState<boolean>(false);
 
 	let audioRef = useRef<any>(null);
 
@@ -48,7 +45,9 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 	useEffect(() => {
 		if (timerRef.current) {
 			if (currentTime === 0) {
-				timerRef.current.innerText = fancyTimeFormat(duration);
+				timerRef.current.innerText = fancyTimeFormat(
+					audioRef.current.audioEl.current.duration
+				);
 			} else {
 				timerRef.current.innerText = fancyTimeFormat(currentTime);
 			}
@@ -58,6 +57,12 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 			}%)`;
 		}
 	}, [currentTime]);
+
+	useEffect(() => {
+		if (duration) {
+			timerRef.current.innerText = fancyTimeFormat(duration);
+		}
+	}, [duration]);
 
 	function fancyTimeFormat(dur: string | number) {
 		// Hours, minutes and seconds
@@ -102,8 +107,17 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 		setPlay(true);
 	};
 
+	function getDuration() {
+		audioRef.current.audioEl.current.currentTime = 0;
+		audioRef.current.audioEl.current.removeEventListener(
+			"timeupdate",
+			getDuration
+		);
+		setDuration(audioRef.current.audioEl.current.duration);
+	}
+
 	return (
-		<VoiceMessageWrapp ref={testRef} onClick={handleSeek}>
+		<VoiceMessageWrapp ref={testRef} onClick={handleSeek} error={error}>
 			<VoiceProgress ref={progressRef} />
 			<VoiceMessageContent>
 				<Button view="ghost" onClick={handleTogglePlay}>
@@ -122,12 +136,23 @@ export const VoiceMessage: React.FC<VoiceMessageProps> = ({
 						setCurrentTime(0);
 						progressRef.current.style.width = `0%`;
 					}}
-					onLoadedMetadata={(event: any) => {
-						setDuration(Number(audioRef.current.audioEl.current.duration));
+					onError={() => setError(true)}
+					onLoadedMetadata={(event) => {
+						if (audioRef.current.audioEl.current.duration == Infinity) {
+							audioRef.current.audioEl.current.currentTime = 1e101;
+
+							audioRef.current.audioEl.current.addEventListener(
+								"timeupdate",
+								getDuration
+							);
+						} else {
+							setDuration(audioRef.current.audioEl.current.duration);
+						}
 					}}
 				/>
 				<VoiceTimer ref={timerRef} />
 			</VoiceMessageContent>
+			{error && <VoiceError>server error</VoiceError>}
 		</VoiceMessageWrapp>
 	);
 };

@@ -66,17 +66,23 @@ const Direct = () => {
 		normalizeDirectContentBodyScroll();
 	}, [messages, activeChat]);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		if (isRecording) {
 			recordingIconRef.current.style.visibility = "visible";
 		} else {
 			recordingIconRef.current.style.visibility = "hidden";
 		}
-	}, [isRecording]);
+	}, [isRecording]);*/
 
 	useEffect(() => {
 		if (recordingBlob) {
-			console.log(URL.createObjectURL(recordingBlob));
+			dispatch({
+				type: ADD_MESSAGE,
+				payload: {
+					chatId: activeChat?.id,
+					voiceUrl: URL.createObjectURL(recordingBlob),
+				},
+			});
 		}
 	}, [recordingBlob]);
 
@@ -103,6 +109,15 @@ const Direct = () => {
 		}
 	};
 
+	const handleVoiceMouseDown = () => {
+		console.log("зажата");
+		startRecording();
+	};
+
+	const handleVoiceMouseUp = () => {
+		stopRecording();
+	};
+
 	function normalizeDirectContentBodyScroll() {
 		messagesBodyRef?.current.scrollTo(
 			0,
@@ -122,7 +137,6 @@ const Direct = () => {
 							onClick={() => setIsGeneralChatActive(!isGeneralChatActive)}
 						/>
 					</Row>
-					<VoiceMessage />
 					<Row style={{ width: "100%", position: "relative" }}>
 						<DirectSidebar
 							messages={messages}
@@ -137,7 +151,7 @@ const Direct = () => {
 						>
 							<Block as="ul" style={{ padding: 15 }}>
 								{messages[activeChatIndex]?.data.map(
-									({ id, text, time, isMe }: any) => (
+									({ id, text, time, isMe, type, url }: any) => (
 										<DirectMessage key={id} as="li" position={isMe}>
 											<Block
 												style={{
@@ -153,14 +167,18 @@ const Direct = () => {
 													size={40}
 												/>
 											</Block>
-											<DirectMessageText $isMe={isMe}>
-												<Text text={text} color="#fff" />
-												<Text
-													text={time}
-													style={{ fontSize: 11, alignSelf: "flex-end" }}
-													color="#fff"
-												/>
-											</DirectMessageText>
+											{type === "voice" ? (
+												<VoiceMessage url={url} />
+											) : (
+												<DirectMessageText $isMe={isMe}>
+													<Text text={text} color="#fff" />
+													<Text
+														text={time}
+														style={{ fontSize: 11, alignSelf: "flex-end" }}
+														color="#fff"
+													/>
+												</DirectMessageText>
+											)}
 										</DirectMessage>
 									)
 								)}
@@ -176,23 +194,17 @@ const Direct = () => {
 										style={{ flex: 1 }}
 									/>
 									<MicrophoneButtonBlock>
-										{
+										{isRecording && (
 											<RecordingIcon
 												src={recordingIcon}
 												alt="recording icon"
 												ref={recordingIconRef}
 											/>
-										}
+										)}
 										<MicrophoneButton
 											view="ghost"
-											onMouseUp={() => {
-												console.log("отзажата");
-												stopRecording();
-											}}
-											onMouseDown={() => {
-												console.log("зажата");
-												startRecording();
-											}}
+											onMouseUp={handleVoiceMouseUp}
+											onMouseDown={handleVoiceMouseDown}
 											$isRecording={isRecording}
 										>
 											<Icon url={microphoneIcon} />
