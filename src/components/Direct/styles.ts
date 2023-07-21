@@ -120,7 +120,7 @@ export const DirectMessageText = styled.div<{ $isMe?: boolean }>`
 		css`
 			border-radius: 10px 0 10px 10px;
 			text-align: right;
-			background-color: #c6bbf6;
+			background-color: #afb1e2;
 		`} @media screen and(max-width: 480 px) {
 		min-width: auto;
 	}
@@ -204,5 +204,8 @@ export const RecordingIcon = styled.img`
 	display: inline-block;
 	height: 20px;
 	width: 20px;
-	margin-right: 5px;
+`;
+
+export const RecordingTimer = styled.div`
+	font-size: 11px;
 `;

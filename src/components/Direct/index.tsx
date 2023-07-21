@@ -13,6 +13,7 @@ import {
 	MicrophoneButton,
 	MicrophoneButtonBlock,
 	RecordingIcon,
+	RecordingTimer,
 } from "./styles";
 
 import { Block, Row } from "../../UI/Layout";
@@ -37,6 +38,8 @@ import Icon from "../../UI/Icon";
 import microphoneIcon from "../../assets/icons/micro.svg";
 import recordingIcon from "../../assets/icons/audio-wave.gif";
 import { useAudioRecorder } from "react-audio-voice-recorder";
+import { useTimer } from "../../hooks/useTimer";
+import { fancyTimeFormat } from "../../helpers/normalizeTimer";
 
 const Direct = () => {
 	const { messages, activeChatIndex, activeChat } = useSelector(
@@ -51,8 +54,13 @@ const Direct = () => {
 	const { recordingBlob, startRecording, stopRecording, isRecording } =
 		useAudioRecorder();
 
+	const { seconds, startTimer, stopTimer, started } = useTimer({
+		direction: "up",
+	});
+
 	const messagesBodyRef = useRef<any>(null);
 	const recordingIconRef = useRef<any>(null);
+	const recordingTimerRef = useRef<any>(null);
 
 	const isTabletWidth = useWindowResize() <= 768;
 
@@ -66,14 +74,6 @@ const Direct = () => {
 		normalizeDirectContentBodyScroll();
 	}, [messages, activeChat]);
 
-	/*useEffect(() => {
-		if (isRecording) {
-			recordingIconRef.current.style.visibility = "visible";
-		} else {
-			recordingIconRef.current.style.visibility = "hidden";
-		}
-	}, [isRecording]);*/
-
 	useEffect(() => {
 		if (recordingBlob) {
 			dispatch({
@@ -85,6 +85,12 @@ const Direct = () => {
 			});
 		}
 	}, [recordingBlob]);
+
+	useEffect(() => {
+		if (recordingTimerRef.current) {
+			recordingTimerRef.current.innerText = fancyTimeFormat(seconds);
+		}
+	}, [seconds]);
 
 	const sendInput = useInput({ initialValue: "" });
 
@@ -109,13 +115,20 @@ const Direct = () => {
 		}
 	};
 
-	const handleVoiceMouseDown = () => {
-		console.log("зажата");
+	const handleVoiceMouseDown = (event: any) => {
+		if (event.nativeEvent.which !== 1) return;
+
 		startRecording();
+
+		startTimer(0);
 	};
 
-	const handleVoiceMouseUp = () => {
+	const handleVoiceMouseUp = (event: any) => {
+		if (event.nativeEvent.which !== 1) return;
+
 		stopRecording();
+
+		stopTimer();
 	};
 
 	function normalizeDirectContentBodyScroll() {
@@ -155,7 +168,7 @@ const Direct = () => {
 										<DirectMessage key={id} as="li" position={isMe}>
 											<Block
 												style={{
-													marginRight: isMe === false && 15,
+													marginRight: !isMe && 15,
 													marginLeft: isMe ? 15 : 0,
 												}}
 											>
@@ -171,11 +184,11 @@ const Direct = () => {
 												<VoiceMessage url={url} />
 											) : (
 												<DirectMessageText $isMe={isMe}>
-													<Text text={text} color="#fff" />
+													<Text text={text} $textColor="#fff" />
 													<Text
 														text={time}
 														style={{ fontSize: 11, alignSelf: "flex-end" }}
-														color="#fff"
+														$textColor="#fff"
 													/>
 												</DirectMessageText>
 											)}
@@ -195,11 +208,22 @@ const Direct = () => {
 									/>
 									<MicrophoneButtonBlock>
 										{isRecording && (
-											<RecordingIcon
-												src={recordingIcon}
-												alt="recording icon"
-												ref={recordingIconRef}
-											/>
+											<Row
+												style={{
+													flexDirection: "column",
+													alignItems: "center",
+													marginRight: 5,
+												}}
+											>
+												<RecordingIcon
+													src={recordingIcon}
+													alt="recording icon"
+													ref={recordingIconRef}
+												/>
+												<RecordingTimer ref={recordingTimerRef}>
+													0:00
+												</RecordingTimer>
+											</Row>
 										)}
 										<MicrophoneButton
 											view="ghost"
