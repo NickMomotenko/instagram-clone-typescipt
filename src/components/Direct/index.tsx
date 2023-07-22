@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { useAudioRecorder } from "react-audio-voice-recorder";
+
 import {
 	AllChatButton,
 	DirectBodyContent,
@@ -15,30 +17,30 @@ import {
 	RecordingIcon,
 	RecordingTimer,
 } from "./styles";
-
 import { Block, Row } from "../../UI/Layout";
 import Text from "../../UI/Text";
 import Input from "../../UI/Input";
 import DefaultButton from "../../UI/DefaultButton";
+import Avatar from "../../UI/Avatar";
+import Icon from "../../UI/Icon";
 
 import Container from "../Container";
+import DirectSidebar from "./DirectSidebar";
 import Header from "../Header";
 
 import { useInput } from "../../hooks/useInput";
+import { useTimer } from "../../hooks/useTimer";
+import { useWindowResize } from "../../hooks/useWindowResize";
 
 import { ADD_MESSAGE, SET_ACTIVE_CHAT } from "../../redux/direct/types";
-import { useWindowResize } from "../../hooks/useWindowResize";
-import DirectSidebar from "./DirectSidebar";
-import Avatar from "../../UI/Avatar";
+
 import { RootState } from "../../redux/store";
+
 import { VoiceMessage } from "../../containers/VoiceMessage/VoiceMessage";
-import Button from "../../UI/Button";
-import Icon from "../../UI/Icon";
 
 import microphoneIcon from "../../assets/icons/micro.svg";
 import recordingIcon from "../../assets/icons/audio-wave.gif";
-import { useAudioRecorder } from "react-audio-voice-recorder";
-import { useTimer } from "../../hooks/useTimer";
+
 import { fancyTimeFormat } from "../../helpers/normalizeTimer";
 
 const Direct = () => {

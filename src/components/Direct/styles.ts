@@ -7,22 +7,6 @@ import { ButtonWrapp } from "../../UI/Button/styled";
 export const DirectWrapp = styled.div`
 	height: 100%;
 	width: 100%;
-
-	* {
-		&::-webkit-scrollbar {
-			width: 7px;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			background: #e4e0e0;
-			border-radius: 20px;
-		}
-
-		&::-webkit-scrollbar-track {
-			background: rgba(0, 0, 0, 0.05);
-			border-radius: 20px;
-		}
-	}
 `;
 
 export const DirectContent = styled.div`
