@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from "styled-components";
 import DefaultButton from "../../UI/DefaultButton";
 
-import { Block } from "../../UI/Layout";
+import { Block, Row } from "../../UI/Layout";
 import { ButtonWrapp } from "../../UI/Button/styled";
 
 export const DirectWrapp = styled.div`
@@ -71,7 +71,7 @@ export const DirectSidebarItem = styled.li<{ $isActiveChat?: boolean }>`
 	}
 `;
 
-export const DirectMessage = styled.div<{ position?: boolean }>`
+export const DirectMessageWrapp = styled.div<{ position?: boolean }>`
 	margin-bottom: 15px;
 	display: flex;
 
@@ -98,6 +98,7 @@ export const DirectMessageText = styled.div<{ $isMe?: boolean }>`
 	flex-direction: column;
 
 	color: #fff;
+	position: relative;
 
 	${({ $isMe }) =>
 		$isMe &&
@@ -132,6 +133,11 @@ export const DirectBodyContent = styled(DirectContentBlockStyles)<{
 	padding: 0;
 	padding-right: 10px;
 	min-height: auto;
+
+	height: 80vh;
+
+	display: flex;
+	flex-direction: column;
 
 	@media screen and (max-width: 768px) {
 		transition: opacity 0.5s;
@@ -192,4 +198,16 @@ export const RecordingIcon = styled.img`
 
 export const RecordingTimer = styled.div`
 	font-size: 11px;
+`;
+
+export const DirectVoiceWrapper = styled.div`
+	max-width: 300px;
+	width: 100%;
+	margin-right: 15px;
+`;
+
+export const DirectVoicePreview = styled(Row)`
+	margin-bottom: 10px;
+
+	transition: opacity 0.3s;
 `;

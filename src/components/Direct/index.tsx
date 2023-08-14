@@ -9,13 +9,13 @@ import {
 	DirectBodyContent,
 	DirectBottomBar,
 	DirectContent,
-	DirectMessage,
-	DirectMessageText,
 	DirectWrapp,
 	MicrophoneButton,
 	MicrophoneButtonBlock,
 	RecordingIcon,
 	RecordingTimer,
+	DirectVoiceWrapper,
+	DirectVoicePreview,
 } from "./styles";
 import { Block, Row } from "../../UI/Layout";
 import Text from "../../UI/Text";
@@ -42,6 +42,10 @@ import microphoneIcon from "../../assets/icons/micro.svg";
 import recordingIcon from "../../assets/icons/audio-wave.gif";
 
 import { fancyTimeFormat } from "../../helpers/normalizeTimer";
+import { DirectMessage } from "./DirectMessage";
+import Button from "../../UI/Button";
+
+import closeIcon from "../../assets/icons/close.svg";
 
 const Direct = () => {
 	const { messages, activeChatIndex, activeChat } = useSelector(
@@ -52,6 +56,7 @@ const Direct = () => {
 	} = useSelector((state: RootState) => state.authUser);
 
 	const [isGeneralChatActive, setIsGeneralChatActive] = useState(false);
+	const [recordingUrl, setRecordingUrl] = useState(null);
 
 	const { recordingBlob, startRecording, stopRecording, isRecording } =
 		useAudioRecorder();
@@ -63,6 +68,10 @@ const Direct = () => {
 	const messagesBodyRef = useRef<any>(null);
 	const recordingIconRef = useRef<any>(null);
 	const recordingTimerRef = useRef<any>(null);
+
+	const inputRef = useRef<any>(null);
+
+	const voicePreviewBlockRef = useRef<any>(null);
 
 	const isTabletWidth = useWindowResize() <= 768;
 
@@ -78,13 +87,12 @@ const Direct = () => {
 
 	useEffect(() => {
 		if (recordingBlob) {
-			dispatch({
-				type: ADD_MESSAGE,
-				payload: {
-					chatId: activeChat?.id,
-					voiceUrl: URL.createObjectURL(recordingBlob),
-				},
-			});
+			setRecordingUrl(URL.createObjectURL(recordingBlob));
+
+			inputRef.current.placeholder = "You can optional add a comment";
+			inputRef.current.focus();
+		} else {
+			setRecordingUrl(null);
 		}
 	}, [recordingBlob]);
 
@@ -100,21 +108,65 @@ const Direct = () => {
 
 	const onChatItemClick = (id: number | string) => {
 		const searchableChat = messages.find((chat) => chat.id === id);
+
 		if (!searchableChat) return;
+
 		dispatch({ type: SET_ACTIVE_CHAT, payload: searchableChat });
+
 		if (isTabletWidth && isGeneralChatActive) setIsGeneralChatActive(false);
 	};
 
 	const handleSend = (text: string) => {
-		if (!text) return;
-		dispatch({ type: ADD_MESSAGE, payload: { chatId: activeChat?.id, text } });
-		sendInput.clearValue();
+		if (!text && !recordingUrl) {
+			inputRef.current.focus();
+			return;
+		}
+
+		if (text && recordingUrl) {
+			dispatch({
+				type: ADD_MESSAGE,
+				payload: {
+					chatId: activeChat?.id,
+					voiceUrl: URL.createObjectURL(recordingBlob),
+					text,
+				},
+			});
+			setRecordingUrl(null);
+			sendInput.clearValue();
+
+			inputRef.current.placeholder = "Your message";
+
+			return;
+		}
+
+		if (text) {
+			dispatch({
+				type: ADD_MESSAGE,
+				payload: { chatId: activeChat?.id, text },
+			});
+
+			sendInput.clearValue();
+
+			return;
+		}
+
+		if (recordingUrl) {
+			dispatch({
+				type: ADD_MESSAGE,
+				payload: {
+					chatId: activeChat?.id,
+					voiceUrl: URL.createObjectURL(recordingBlob),
+				},
+			});
+
+			setRecordingUrl(null);
+			inputRef.current.placeholder = "Your message";
+			return;
+		}
 	};
 
 	const sendInputOnKeyDown = (e: any) => {
-		if (e.keyCode === 13) {
-			handleSend(sendInput?.value);
-		}
+		if (e.keyCode === 13) handleSend(sendInput?.value);
 	};
 
 	const handleVoiceMouseDown = (event: any) => {
@@ -131,6 +183,12 @@ const Direct = () => {
 		stopRecording();
 
 		stopTimer();
+	};
+
+	const handleCrossVoicePreviewComponent = () => {
+		setRecordingUrl(null);
+
+		inputRef.current.placeholder = "Your message";
 	};
 
 	function normalizeDirectContentBodyScroll() {
@@ -164,41 +222,34 @@ const Direct = () => {
 							ref={messagesBodyRef}
 							$isGeneralChatActive={isGeneralChatActive}
 						>
-							<Block as="ul" style={{ padding: 15 }}>
-								{messages[activeChatIndex]?.data.map(
-									({ id, text, time, isMe, type, url }: any) => (
-										<DirectMessage key={id} as="li" position={isMe}>
-											<Block
-												style={{
-													marginRight: !isMe && 15,
-													marginLeft: isMe ? 15 : 0,
-												}}
-											>
-												<Avatar
-													url={isMe ? user?.avatar : activeChat?.user?.avatar}
-													fullname={
-														isMe ? user?.fullname : activeChat?.user?.fullname
-													}
-													size={40}
-												/>
-											</Block>
-											{type === "voice" ? (
-												<VoiceMessage url={url} />
-											) : (
-												<DirectMessageText $isMe={isMe}>
-													<Text text={text} $textColor="#fff" />
-													<Text
-														text={time}
-														style={{ fontSize: 11, alignSelf: "flex-end" }}
-														$textColor="#fff"
-													/>
-												</DirectMessageText>
-											)}
-										</DirectMessage>
-									)
-								)}
+							<Block as="ul" style={{ padding: 15, flex: 1 }}>
+								{messages[activeChatIndex]?.data.map((message: any) => (
+									<DirectMessage
+										key={message.id}
+										as="li"
+										position={message.isMe}
+										activeChat={activeChat}
+										user={user}
+										{...message}
+									/>
+								))}
 							</Block>
 							<DirectBottomBar>
+								{recordingUrl && (
+									<DirectVoicePreview>
+										<DirectVoiceWrapper>
+											<VoiceMessage
+												url={
+													recordingBlob && URL.createObjectURL(recordingBlob)
+												}
+												ref={voicePreviewBlockRef}
+											/>
+										</DirectVoiceWrapper>
+										<Button onClick={handleCrossVoicePreviewComponent}>
+											<Icon url={closeIcon} fill="black" />
+										</Button>
+									</DirectVoicePreview>
+								)}
 								<Row>
 									<Input
 										value={sendInput?.value}
@@ -206,6 +257,7 @@ const Direct = () => {
 										onKeyDown={sendInputOnKeyDown}
 										placeholder="Your message"
 										noError
+										ref={inputRef}
 										style={{ flex: 1 }}
 									/>
 									<MicrophoneButtonBlock>

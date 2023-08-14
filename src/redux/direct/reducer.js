@@ -25,11 +25,15 @@ export const directReducer = (state = initialState, action) => {
 
 			if (!searchableChat) return;
 
+			const dateNow = new Date();
+
 			let newMessage = {
 				id: Date.now().toString(),
 				isMe: true,
-				date: "26.12.2022",
-				time: "17:38",
+				date: `${dateNow.getDate()}.${
+					dateNow.getMonth() + 1
+				}.${dateNow.getFullYear()}`,
+				time: `${dateNow.getHours()}:${dateNow.getMinutes()}`,
 			};
 
 			if (text) {
@@ -53,6 +57,23 @@ export const directReducer = (state = initialState, action) => {
 		}
 
 		case DELETE_MESSAGE: {
+			const { chatId, messageId } = action.payload;
+
+			const searchableChat = messages.find((chat) => chat.id === chatId);
+			const searchableMessageIndex = messages.indexOf(searchableChat);
+
+			if (!searchableChat) return state;
+
+			const updatedChatItem = {
+				...searchableChat,
+				data: [...searchableChat.data.filter((mess) => mess.id !== messageId)],
+			};
+
+			const updatedData = [...messages];
+
+			updatedData.splice(searchableMessageIndex, 1, updatedChatItem);
+
+			return { ...state, messages: [...updatedData] };
 		}
 
 		case CHANGE_MESSAGE: {

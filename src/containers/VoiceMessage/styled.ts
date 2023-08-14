@@ -2,12 +2,12 @@ import styled, { css } from "styled-components";
 
 export const VoiceMessageWrapp = styled.div<{ error?: boolean }>`
   max-width: 300px;
-  min-width: 300px;
   padding: 10px;
   border-radius: 10px;
   background-color: #c6bbf6;
   min-height: 52px;
   max-height: 52px;
+  width: 100%;
 
   display: inline-block;
 

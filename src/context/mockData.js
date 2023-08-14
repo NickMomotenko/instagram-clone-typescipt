@@ -454,6 +454,7 @@ export const messagesDb = [
 				time: "19:18",
 				type: "voice",
 				url: voiceExample,
+				text: "look at this voice",
 			},
 		],
 	},
