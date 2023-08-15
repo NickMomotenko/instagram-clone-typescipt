@@ -1,7 +1,7 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AppWrapp } from "./AppStyled";
 
-import { authRoutes, baseRoutes } from "./helpers/base-routes";
+import { authRoutes, authRoutesArray, baseRoutes } from "./helpers/base-routes";
 
 import Preloader from "./pages/Preloader";
 import Login from "./pages/Login";
@@ -24,6 +24,10 @@ import EditGeneral from "./components/Edit/EditGeneral";
 import { useEffect, useRef } from "react";
 import { IPost } from "./redux/types";
 import { useWindowResize } from "./hooks/useWindowResize";
+import { useNavigate } from "react-router";
+import { SET_PRELOADER_STATUS } from "./redux/app/types";
+import { togglePreloader } from "./redux/app/helper";
+import { SET_LOCATION_PATH } from "./redux/auth/types";
 
 export const App = () => {
 	const { isPreloaderActive } = useSelector((state: RootState) => state.app);
@@ -35,22 +39,30 @@ export const App = () => {
 		authUser: { posts: authUserPosts },
 	} = useSelector((state: RootState) => state.authUser);
 
+	const { isAuth, locationPath } = useSelector(
+		(state: RootState) => state.auth
+	);
+
 	const dispatch = useDispatch<AppDispatch>();
 	const popup = useActive();
+	const navigate = useNavigate();
+	const location = useLocation().pathname;
 
 	const postContentRef = useRef<any>(null);
 
 	const windowWidth = useWindowResize();
 
-	// delay timer in sec
-	const delayTimer = 3;
-
 	useEffect(() => {
-		// dispatch({ type: SET_PRELOADER_STATUS, payload: false });
-		// setTimeout(() => {
-		//   dispatch({ type:  SET_PRELOADER_STATUS, payload: true });
-		// }, delayTimer * 1000);
-	}, []);
+		// if (location === baseRoutes.base || location === baseRoutes.login) {
+		// 	dispatch({ type: SET_PRELOADER_STATUS, payload: true });
+		//
+		// 	setTimeout(() => {
+		// 		dispatch({ type: SET_PRELOADER_STATUS, payload: false });
+		// 	}, 1000);
+		// }
+
+		dispatch({ type: SET_LOCATION_PATH, payload: location });
+	}, [location]);
 
 	useEffect(() => {
 		if (windowWidth > 1100) {
@@ -84,6 +96,20 @@ export const App = () => {
 		}
 	}, [windowWidth]);
 
+	useEffect(() => {
+		if (!isAuth) {
+			navigate(baseRoutes.login);
+		}
+
+		if (isAuth) {
+			if (authRoutesArray.includes(locationPath)) {
+				navigate(baseRoutes.base);
+			} else {
+				navigate(locationPath);
+			}
+		}
+	}, [isAuth]);
+
 	return (
 		<AppWrapp>
 			<Preloader isActive={isPreloaderActive} />
@@ -91,10 +117,7 @@ export const App = () => {
 			<Routes>
 				{/* <Route path={baseRoutes.stories} element={<Stories />} /> */}
 				<Route path={baseRoutes.direct} element={<Direct />} />
-				<Route
-					path={baseRoutes.login}
-					element={<Login isPreloaderActive={false} />}
-				>
+				<Route path={baseRoutes.login} element={<Login />}>
 					<Route path="" element={<LoginBlock />} />
 					<Route path={authRoutes.create} element={<CreateNewAccount />} />
 					<Route path={authRoutes.forgot} element={<ForgotPassword />} />
@@ -110,7 +133,15 @@ export const App = () => {
 						</Route>
 					</Route>
 				</Route>
-				<Route path="*" element={<Navigate to={baseRoutes.login} replace />} />
+				<Route
+					path="*"
+					element={
+						<Navigate
+							to={isAuth ? baseRoutes.base : baseRoutes.login}
+							replace
+						/>
+					}
+				/>
 			</Routes>
 		</AppWrapp>
 	);

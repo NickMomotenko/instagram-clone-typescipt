@@ -10,42 +10,39 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 
 import { LOGIN } from "../../redux/auth/types";
+import React from "react";
 
-type LoginProps = {
-  isPreloaderActive?: boolean;
-};
+const Login = () => {
+	const dispatch = useDispatch<AppDispatch>();
 
-const Login: React.FC<LoginProps> = ({ isPreloaderActive = false }) => {
-  const dispath = useDispatch<AppDispatch>();
+	const handleLogin = () => {
+		dispatch({
+			type: LOGIN,
+			payload: {
+				data: ["test@mail.ru", "11241414"],
+				isPreview: true,
+			},
+		});
+	};
 
-  const handleLogin = () => {
-    dispath({
-      type: LOGIN,
-      payload: {
-        data: ["test@mail.ru", "11241414"],
-        isPreview: true,
-      },
-    });
-  };
+	return (
+		<LoginWrapp>
+			<LogoBanner />
 
-  return (
-    <LoginWrapp>
-      <LogoBanner isPreloaderActive={true} />
+			<LoginFormWrapp>
+				<Outlet />
+			</LoginFormWrapp>
 
-      <LoginFormWrapp>
-        <Outlet />
-      </LoginFormWrapp>
-
-      <DemoButton>
-        <Text text="If you are here first time" $bold />
-        <Text
-          text="You can use Demo Version , with no login and registration"
-          style={{ marginBottom: 10 }}
-        />
-        <DefaultButton text="Try Demo Version" onClick={handleLogin} />
-      </DemoButton>
-    </LoginWrapp>
-  );
+			<DemoButton>
+				<Text text="If you are here first time" $bold />
+				<Text
+					text="You can use Demo Version , with no login and registration"
+					style={{ marginBottom: 10 }}
+				/>
+				<DefaultButton text="Try Demo Version" onClick={handleLogin} />
+			</DemoButton>
+		</LoginWrapp>
+	);
 };
 
 export default Login;
