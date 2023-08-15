@@ -16,6 +16,7 @@ import {
 	RecordingTimer,
 	DirectVoiceWrapper,
 	DirectVoicePreview,
+	DirectSendButton,
 } from "./styles";
 import { Block, Row } from "../../UI/Layout";
 import Text from "../../UI/Text";
@@ -288,7 +289,7 @@ const Direct = () => {
 											<Icon url={microphoneIcon} />
 										</MicrophoneButton>
 									</MicrophoneButtonBlock>
-									<DefaultButton
+									<DirectSendButton
 										text="Send"
 										onClick={() => handleSend(sendInput?.value)}
 										style={{ marginLeft: 21 }}

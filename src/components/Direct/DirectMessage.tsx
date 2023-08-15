@@ -96,6 +96,7 @@ export const DirectMessage: React.FC<DirectMessageProps> = ({
 			</Block>
 			<DirectMessageText
 				$isMe={isMe}
+				withVoice={withVoice}
 				onContextMenu={(e: any) => handleClickOption(e, isMe)}
 			>
 				{withVoice && <VoiceMessage url={url} />}

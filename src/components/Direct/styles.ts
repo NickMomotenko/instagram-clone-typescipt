@@ -45,12 +45,19 @@ export const DirectContentSidebar = styled(DirectContentBlockStyles)<{
 		margin-right: 0;
 		box-shadow: -20px 0 10px #f4f4f4;
 
+		max-width: 100%;
+		width: 100%;
+		min-width: auto;
+
+		visibility: hidden;
+
 		transition: right 0.5s;
 
 		${({ $isGeneralChatActive }) =>
 			$isGeneralChatActive &&
 			css`
 				right: 0;
+				visibility: visible;
 			`}
 	}
 `;
@@ -87,7 +94,10 @@ export const DirectMessageWrapp = styled.div<{ position?: boolean }>`
 	}
 `;
 
-export const DirectMessageText = styled.div<{ $isMe?: boolean }>`
+export const DirectMessageText = styled.div<{
+	$isMe?: boolean;
+	withVoice?: boolean;
+}>`
 	max-width: 300px;
 	min-width: 300px;
 	background-color: #a897f7;
@@ -106,8 +116,12 @@ export const DirectMessageText = styled.div<{ $isMe?: boolean }>`
 			border-radius: 10px 0 10px 10px;
 			text-align: right;
 			background-color: #afb1e2;
-		`} @media screen and(max-width: 480 px) {
+		`};
+
+	@media screen and (max-width: 480px) {
 		min-width: auto;
+
+		width: ${({ withVoice }) => withVoice && "100%"};
 	}
 `;
 
@@ -210,4 +224,13 @@ export const DirectVoicePreview = styled(Row)`
 	margin-bottom: 10px;
 
 	transition: opacity 0.3s;
+`;
+
+export const DirectSendButton = styled(DefaultButton)`
+	background: #ff7e92;
+
+	@media screen and (max-width: 480px) {
+		padding: 7px 12px;
+		margin-left: 10px !important;
+	}
 `;
