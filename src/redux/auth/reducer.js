@@ -15,10 +15,7 @@ export const authReducer = (state = initialState, action) => {
 			} = action.payload;
 
 			if (!isPreview) {
-				alert(`Твои данные:
-      Логин: ${login} , password: ${password}
-      Welcome ;)
-      `);
+				alert('Welcome!');
 			}
 
 			return { ...state, isAuth: true };
@@ -29,6 +26,7 @@ export const authReducer = (state = initialState, action) => {
 		}
 
 		case SIGNUP: {
+			alert('Success , now u can login!');
 			return state;
 		}
 
