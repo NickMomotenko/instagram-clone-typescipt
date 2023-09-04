@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 import styled from "styled-components";
 
-export const LogoWrapp = styled.a`
+export const LogoWrapp = styled(Link)`
 	display: inline-block;
 	margin-right: 5px;
 `;
